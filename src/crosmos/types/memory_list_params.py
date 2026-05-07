@@ -9,8 +9,7 @@ __all__ = ["MemoryListParams"]
 
 
 class MemoryListParams(TypedDict, total=False):
-    space_id: Required[int]
-    """Memory space to list memories from"""
+    space_uuid: Required[str]
 
     limit: int
 

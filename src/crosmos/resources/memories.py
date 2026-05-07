@@ -9,7 +9,7 @@ import httpx
 
 from ..types import memory_list_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import path_template, maybe_transform, async_maybe_transform
+from .._utils import maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -19,7 +19,6 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.memory import Memory
 from ..types.memory_list_response import MemoryListResponse
 
 __all__ = ["MemoriesResource", "AsyncMemoriesResource"]
@@ -48,7 +47,7 @@ class MemoriesResource(SyncAPIResource):
     def list(
         self,
         *,
-        space_id: int,
+        space_uuid: str,
         limit: int | Omit = omit,
         memory_type: Optional[Literal["viewpoint", "semantic", "episode"]] | Omit = omit,
         offset: int | Omit = omit,
@@ -66,8 +65,6 @@ class MemoriesResource(SyncAPIResource):
         List memories in a memory space.
 
         Args:
-          space_id: Memory space to list memories from
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -85,7 +82,7 @@ class MemoriesResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
-                        "space_id": space_id,
+                        "space_uuid": space_uuid,
                         "limit": limit,
                         "memory_type": memory_type,
                         "offset": offset,
@@ -96,37 +93,6 @@ class MemoriesResource(SyncAPIResource):
                 ),
             ),
             cast_to=MemoryListResponse,
-        )
-
-    def get(
-        self,
-        memory_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Memory:
-        """
-        Get a memory by ID.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return self._get(
-            path_template("/api/v1/memories/{memory_id}", memory_id=memory_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=Memory,
         )
 
 
@@ -153,7 +119,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
     async def list(
         self,
         *,
-        space_id: int,
+        space_uuid: str,
         limit: int | Omit = omit,
         memory_type: Optional[Literal["viewpoint", "semantic", "episode"]] | Omit = omit,
         offset: int | Omit = omit,
@@ -171,8 +137,6 @@ class AsyncMemoriesResource(AsyncAPIResource):
         List memories in a memory space.
 
         Args:
-          space_id: Memory space to list memories from
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -190,7 +154,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
-                        "space_id": space_id,
+                        "space_uuid": space_uuid,
                         "limit": limit,
                         "memory_type": memory_type,
                         "offset": offset,
@@ -203,37 +167,6 @@ class AsyncMemoriesResource(AsyncAPIResource):
             cast_to=MemoryListResponse,
         )
 
-    async def get(
-        self,
-        memory_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Memory:
-        """
-        Get a memory by ID.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return await self._get(
-            path_template("/api/v1/memories/{memory_id}", memory_id=memory_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=Memory,
-        )
-
 
 class MemoriesResourceWithRawResponse:
     def __init__(self, memories: MemoriesResource) -> None:
@@ -241,9 +174,6 @@ class MemoriesResourceWithRawResponse:
 
         self.list = to_raw_response_wrapper(
             memories.list,
-        )
-        self.get = to_raw_response_wrapper(
-            memories.get,
         )
 
 
@@ -254,9 +184,6 @@ class AsyncMemoriesResourceWithRawResponse:
         self.list = async_to_raw_response_wrapper(
             memories.list,
         )
-        self.get = async_to_raw_response_wrapper(
-            memories.get,
-        )
 
 
 class MemoriesResourceWithStreamingResponse:
@@ -266,9 +193,6 @@ class MemoriesResourceWithStreamingResponse:
         self.list = to_streamed_response_wrapper(
             memories.list,
         )
-        self.get = to_streamed_response_wrapper(
-            memories.get,
-        )
 
 
 class AsyncMemoriesResourceWithStreamingResponse:
@@ -277,7 +201,4 @@ class AsyncMemoriesResourceWithStreamingResponse:
 
         self.list = async_to_streamed_response_wrapper(
             memories.list,
-        )
-        self.get = async_to_streamed_response_wrapper(
-            memories.get,
         )

@@ -9,7 +9,7 @@ __all__ = ["Space"]
 
 
 class Space(BaseModel):
-    id: int
+    id: str
 
     created_at: datetime
 
@@ -18,5 +18,7 @@ class Space(BaseModel):
     meta: Optional[Dict[str, object]] = None
 
     name: str
+
+    org_id: str
 
     updated_at: datetime

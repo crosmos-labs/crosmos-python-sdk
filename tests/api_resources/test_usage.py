@@ -29,7 +29,6 @@ class TestUsage:
     def test_method_get_with_all_params(self, client: Crosmos) -> None:
         usage = client.usage.get(
             end_date=parse_date("2019-12-27"),
-            space_id=0,
             start_date=parse_date("2019-12-27"),
         )
         assert_matches_type(UsageGetResponse, usage, path=["response"])
@@ -73,7 +72,6 @@ class TestAsyncUsage:
     async def test_method_get_with_all_params(self, async_client: AsyncCrosmos) -> None:
         usage = await async_client.usage.get(
             end_date=parse_date("2019-12-27"),
-            space_id=0,
             start_date=parse_date("2019-12-27"),
         )
         assert_matches_type(UsageGetResponse, usage, path=["response"])

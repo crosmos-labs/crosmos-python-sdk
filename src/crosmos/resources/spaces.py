@@ -6,9 +6,9 @@ from typing import Dict, Optional
 
 import httpx
 
-from ..types import space_create_params
-from .._types import Body, Omit, Query, Headers, NoneType, NotGiven, omit, not_given
-from .._utils import path_template, maybe_transform, async_maybe_transform
+from ..types import space_list_params, space_create_params
+from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from .._utils import maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -58,7 +58,7 @@ class SpacesResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Space:
         """
-        Create a new memory space for the authenticated user.
+        Create a new memory space within the caller's active organization.
 
         Args:
           extra_headers: Send extra headers
@@ -88,6 +88,7 @@ class SpacesResource(SyncAPIResource):
     def list(
         self,
         *,
+        name: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -95,76 +96,34 @@ class SpacesResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SpaceListResponse:
-        """List all memory spaces owned by the authenticated user."""
+        """
+        List memory spaces in the user's active organization.
+
+        Pass `?name=` to resolve a space by its human-readable name (useful for
+        LLM/plugin flows that have a name but not the UUID).
+
+        Args:
+          name: Exact-match filter on space name within the active org. Returns 0 or 1 spaces
+              (names are unique per org).
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
         return self._get(
             "/api/v1/spaces",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"name": name}, space_list_params.SpaceListParams),
             ),
             cast_to=SpaceListResponse,
-        )
-
-    def delete(
-        self,
-        space_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
-        """
-        Delete a memory space and all its contents (cascading).
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
-        return self._delete(
-            path_template("/api/v1/spaces/{space_id}", space_id=space_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=NoneType,
-        )
-
-    def get(
-        self,
-        space_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Space:
-        """
-        Get a memory space by ID.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return self._get(
-            path_template("/api/v1/spaces/{space_id}", space_id=space_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=Space,
         )
 
 
@@ -202,7 +161,7 @@ class AsyncSpacesResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Space:
         """
-        Create a new memory space for the authenticated user.
+        Create a new memory space within the caller's active organization.
 
         Args:
           extra_headers: Send extra headers
@@ -232,6 +191,7 @@ class AsyncSpacesResource(AsyncAPIResource):
     async def list(
         self,
         *,
+        name: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -239,76 +199,34 @@ class AsyncSpacesResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SpaceListResponse:
-        """List all memory spaces owned by the authenticated user."""
+        """
+        List memory spaces in the user's active organization.
+
+        Pass `?name=` to resolve a space by its human-readable name (useful for
+        LLM/plugin flows that have a name but not the UUID).
+
+        Args:
+          name: Exact-match filter on space name within the active org. Returns 0 or 1 spaces
+              (names are unique per org).
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
         return await self._get(
             "/api/v1/spaces",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"name": name}, space_list_params.SpaceListParams),
             ),
             cast_to=SpaceListResponse,
-        )
-
-    async def delete(
-        self,
-        space_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
-        """
-        Delete a memory space and all its contents (cascading).
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
-        return await self._delete(
-            path_template("/api/v1/spaces/{space_id}", space_id=space_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=NoneType,
-        )
-
-    async def get(
-        self,
-        space_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Space:
-        """
-        Get a memory space by ID.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return await self._get(
-            path_template("/api/v1/spaces/{space_id}", space_id=space_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=Space,
         )
 
 
@@ -322,12 +240,6 @@ class SpacesResourceWithRawResponse:
         self.list = to_raw_response_wrapper(
             spaces.list,
         )
-        self.delete = to_raw_response_wrapper(
-            spaces.delete,
-        )
-        self.get = to_raw_response_wrapper(
-            spaces.get,
-        )
 
 
 class AsyncSpacesResourceWithRawResponse:
@@ -339,12 +251,6 @@ class AsyncSpacesResourceWithRawResponse:
         )
         self.list = async_to_raw_response_wrapper(
             spaces.list,
-        )
-        self.delete = async_to_raw_response_wrapper(
-            spaces.delete,
-        )
-        self.get = async_to_raw_response_wrapper(
-            spaces.get,
         )
 
 
@@ -358,12 +264,6 @@ class SpacesResourceWithStreamingResponse:
         self.list = to_streamed_response_wrapper(
             spaces.list,
         )
-        self.delete = to_streamed_response_wrapper(
-            spaces.delete,
-        )
-        self.get = to_streamed_response_wrapper(
-            spaces.get,
-        )
 
 
 class AsyncSpacesResourceWithStreamingResponse:
@@ -375,10 +275,4 @@ class AsyncSpacesResourceWithStreamingResponse:
         )
         self.list = async_to_streamed_response_wrapper(
             spaces.list,
-        )
-        self.delete = async_to_streamed_response_wrapper(
-            spaces.delete,
-        )
-        self.get = async_to_streamed_response_wrapper(
-            spaces.get,
         )

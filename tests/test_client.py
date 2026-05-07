@@ -876,7 +876,9 @@ class TestCrosmos:
         respx_mock.post("/api/v1/search").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            client.search.with_streaming_response.hybrid(query="x", space_id=0).__enter__()
+            client.search.with_streaming_response.hybrid(
+                query="x", space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"
+            ).__enter__()
 
         assert _get_open_connections(client) == 0
 
@@ -886,7 +888,9 @@ class TestCrosmos:
         respx_mock.post("/api/v1/search").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            client.search.with_streaming_response.hybrid(query="x", space_id=0).__enter__()
+            client.search.with_streaming_response.hybrid(
+                query="x", space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"
+            ).__enter__()
         assert _get_open_connections(client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -915,7 +919,7 @@ class TestCrosmos:
 
         respx_mock.post("/api/v1/search").mock(side_effect=retry_handler)
 
-        response = client.search.with_raw_response.hybrid(query="x", space_id=0)
+        response = client.search.with_raw_response.hybrid(query="x", space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -940,7 +944,9 @@ class TestCrosmos:
         respx_mock.post("/api/v1/search").mock(side_effect=retry_handler)
 
         response = client.search.with_raw_response.hybrid(
-            query="x", space_id=0, extra_headers={"x-stainless-retry-count": Omit()}
+            query="x",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            extra_headers={"x-stainless-retry-count": Omit()},
         )
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
@@ -965,7 +971,7 @@ class TestCrosmos:
         respx_mock.post("/api/v1/search").mock(side_effect=retry_handler)
 
         response = client.search.with_raw_response.hybrid(
-            query="x", space_id=0, extra_headers={"x-stainless-retry-count": "42"}
+            query="x", space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", extra_headers={"x-stainless-retry-count": "42"}
         )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
@@ -1812,7 +1818,9 @@ class TestAsyncCrosmos:
         respx_mock.post("/api/v1/search").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            await async_client.search.with_streaming_response.hybrid(query="x", space_id=0).__aenter__()
+            await async_client.search.with_streaming_response.hybrid(
+                query="x", space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"
+            ).__aenter__()
 
         assert _get_open_connections(async_client) == 0
 
@@ -1822,7 +1830,9 @@ class TestAsyncCrosmos:
         respx_mock.post("/api/v1/search").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            await async_client.search.with_streaming_response.hybrid(query="x", space_id=0).__aenter__()
+            await async_client.search.with_streaming_response.hybrid(
+                query="x", space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"
+            ).__aenter__()
         assert _get_open_connections(async_client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -1851,7 +1861,9 @@ class TestAsyncCrosmos:
 
         respx_mock.post("/api/v1/search").mock(side_effect=retry_handler)
 
-        response = await client.search.with_raw_response.hybrid(query="x", space_id=0)
+        response = await client.search.with_raw_response.hybrid(
+            query="x", space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"
+        )
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -1876,7 +1888,9 @@ class TestAsyncCrosmos:
         respx_mock.post("/api/v1/search").mock(side_effect=retry_handler)
 
         response = await client.search.with_raw_response.hybrid(
-            query="x", space_id=0, extra_headers={"x-stainless-retry-count": Omit()}
+            query="x",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            extra_headers={"x-stainless-retry-count": Omit()},
         )
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
@@ -1901,7 +1915,7 @@ class TestAsyncCrosmos:
         respx_mock.post("/api/v1/search").mock(side_effect=retry_handler)
 
         response = await client.search.with_raw_response.hybrid(
-            query="x", space_id=0, extra_headers={"x-stainless-retry-count": "42"}
+            query="x", space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", extra_headers={"x-stainless-retry-count": "42"}
         )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"

@@ -9,7 +9,7 @@ __all__ = ["Memory"]
 
 
 class Memory(BaseModel):
-    id: int
+    id: str
 
     access_frequency: int
 
@@ -29,4 +29,4 @@ class Memory(BaseModel):
 
     meta: Optional[Dict[str, object]] = None
 
-    space_id: int
+    space_id: str

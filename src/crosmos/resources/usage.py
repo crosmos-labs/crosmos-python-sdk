@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Union, Optional
+from typing import Union
 from datetime import date
 
 import httpx
@@ -48,7 +48,6 @@ class UsageResource(SyncAPIResource):
         self,
         *,
         end_date: Union[str, date, None] | Omit = omit,
-        space_id: Optional[int] | Omit = omit,
         start_date: Union[str, date, None] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -58,12 +57,10 @@ class UsageResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> UsageGetResponse:
         """
-        Return aggregated usage for the authenticated user.
+        Return org-level usage for the active billing period and plan limits.
 
         Args:
           end_date: End date (defaults to today)
-
-          space_id: Filter by memory space
 
           start_date: Start date (defaults to 1st of current month)
 
@@ -85,7 +82,6 @@ class UsageResource(SyncAPIResource):
                 query=maybe_transform(
                     {
                         "end_date": end_date,
-                        "space_id": space_id,
                         "start_date": start_date,
                     },
                     usage_get_params.UsageGetParams,
@@ -119,7 +115,6 @@ class AsyncUsageResource(AsyncAPIResource):
         self,
         *,
         end_date: Union[str, date, None] | Omit = omit,
-        space_id: Optional[int] | Omit = omit,
         start_date: Union[str, date, None] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -129,12 +124,10 @@ class AsyncUsageResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> UsageGetResponse:
         """
-        Return aggregated usage for the authenticated user.
+        Return org-level usage for the active billing period and plan limits.
 
         Args:
           end_date: End date (defaults to today)
-
-          space_id: Filter by memory space
 
           start_date: Start date (defaults to 1st of current month)
 
@@ -156,7 +149,6 @@ class AsyncUsageResource(AsyncAPIResource):
                 query=await async_maybe_transform(
                     {
                         "end_date": end_date,
-                        "space_id": space_id,
                         "start_date": start_date,
                     },
                     usage_get_params.UsageGetParams,
