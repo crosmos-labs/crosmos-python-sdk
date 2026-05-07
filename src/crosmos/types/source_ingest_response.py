@@ -10,6 +10,6 @@ __all__ = ["SourceIngestResponse"]
 class SourceIngestResponse(BaseModel):
     job_id: str
 
-    source_ids: List[int]
+    source_ids: List[str]
 
     status: Optional[str] = None

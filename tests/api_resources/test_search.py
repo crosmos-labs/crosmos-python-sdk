@@ -22,7 +22,22 @@ class TestSearch:
     def test_method_hybrid(self, client: Crosmos) -> None:
         search = client.search.hybrid(
             query="x",
-            space_id=0,
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(Search, search, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_hybrid_with_all_params(self, client: Crosmos) -> None:
+        search = client.search.hybrid(
+            query="x",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            diversify=True,
+            graph=True,
+            include_source=True,
+            limit=1,
+            recency_bias=0,
+            rerank=True,
         )
         assert_matches_type(Search, search, path=["response"])
 
@@ -31,7 +46,7 @@ class TestSearch:
     def test_raw_response_hybrid(self, client: Crosmos) -> None:
         response = client.search.with_raw_response.hybrid(
             query="x",
-            space_id=0,
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -44,7 +59,7 @@ class TestSearch:
     def test_streaming_response_hybrid(self, client: Crosmos) -> None:
         with client.search.with_streaming_response.hybrid(
             query="x",
-            space_id=0,
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -65,7 +80,22 @@ class TestAsyncSearch:
     async def test_method_hybrid(self, async_client: AsyncCrosmos) -> None:
         search = await async_client.search.hybrid(
             query="x",
-            space_id=0,
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(Search, search, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_hybrid_with_all_params(self, async_client: AsyncCrosmos) -> None:
+        search = await async_client.search.hybrid(
+            query="x",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            diversify=True,
+            graph=True,
+            include_source=True,
+            limit=1,
+            recency_bias=0,
+            rerank=True,
         )
         assert_matches_type(Search, search, path=["response"])
 
@@ -74,7 +104,7 @@ class TestAsyncSearch:
     async def test_raw_response_hybrid(self, async_client: AsyncCrosmos) -> None:
         response = await async_client.search.with_raw_response.hybrid(
             query="x",
-            space_id=0,
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -87,7 +117,7 @@ class TestAsyncSearch:
     async def test_streaming_response_hybrid(self, async_client: AsyncCrosmos) -> None:
         async with async_client.search.with_streaming_response.hybrid(
             query="x",
-            space_id=0,
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

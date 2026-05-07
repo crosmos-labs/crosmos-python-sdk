@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from typing import Optional
+
 import httpx
 
 from ..types import search_hybrid_params
-from .._types import Body, Query, Headers, NotGiven, not_given
+from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from .._utils import maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
@@ -45,7 +47,13 @@ class SearchResource(SyncAPIResource):
         self,
         *,
         query: str,
-        space_id: int,
+        space_id: str,
+        diversify: bool | Omit = omit,
+        graph: bool | Omit = omit,
+        include_source: bool | Omit = omit,
+        limit: int | Omit = omit,
+        recency_bias: Optional[float] | Omit = omit,
+        rerank: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -54,15 +62,25 @@ class SearchResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Search:
         """
-        Search memories using hybrid retrieval.
-
-        Combines semantic (vector), keyword (full-text), and graph-based retrieval using
-        Reciprocal Rank Fusion (RRF) for result fusion.
+        Perform a search for relevant memories within a specified memory space.
 
         Args:
           query: The search query text
 
           space_id: The memory space to search within
+
+          diversify: Apply MMR diversity post-rerank. Enable for broad/summarization intents.
+
+          graph: Include graph traversal signal. Disable for semantic + keyword only.
+
+          include_source: Include original source text in results.
+
+          limit: Max number of results to return
+
+          recency_bias: Override recency weighting. 0.0 disables recency, higher values favor recent
+              memories.
+
+          rerank: Apply cross-encoder reranking. Disable for lower latency.
 
           extra_headers: Send extra headers
 
@@ -78,6 +96,12 @@ class SearchResource(SyncAPIResource):
                 {
                     "query": query,
                     "space_id": space_id,
+                    "diversify": diversify,
+                    "graph": graph,
+                    "include_source": include_source,
+                    "limit": limit,
+                    "recency_bias": recency_bias,
+                    "rerank": rerank,
                 },
                 search_hybrid_params.SearchHybridParams,
             ),
@@ -112,7 +136,13 @@ class AsyncSearchResource(AsyncAPIResource):
         self,
         *,
         query: str,
-        space_id: int,
+        space_id: str,
+        diversify: bool | Omit = omit,
+        graph: bool | Omit = omit,
+        include_source: bool | Omit = omit,
+        limit: int | Omit = omit,
+        recency_bias: Optional[float] | Omit = omit,
+        rerank: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -121,15 +151,25 @@ class AsyncSearchResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Search:
         """
-        Search memories using hybrid retrieval.
-
-        Combines semantic (vector), keyword (full-text), and graph-based retrieval using
-        Reciprocal Rank Fusion (RRF) for result fusion.
+        Perform a search for relevant memories within a specified memory space.
 
         Args:
           query: The search query text
 
           space_id: The memory space to search within
+
+          diversify: Apply MMR diversity post-rerank. Enable for broad/summarization intents.
+
+          graph: Include graph traversal signal. Disable for semantic + keyword only.
+
+          include_source: Include original source text in results.
+
+          limit: Max number of results to return
+
+          recency_bias: Override recency weighting. 0.0 disables recency, higher values favor recent
+              memories.
+
+          rerank: Apply cross-encoder reranking. Disable for lower latency.
 
           extra_headers: Send extra headers
 
@@ -145,6 +185,12 @@ class AsyncSearchResource(AsyncAPIResource):
                 {
                     "query": query,
                     "space_id": space_id,
+                    "diversify": diversify,
+                    "graph": graph,
+                    "include_source": include_source,
+                    "limit": limit,
+                    "recency_bias": recency_bias,
+                    "rerank": rerank,
                 },
                 search_hybrid_params.SearchHybridParams,
             ),

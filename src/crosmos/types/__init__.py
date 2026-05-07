@@ -7,6 +7,7 @@ from .memory import Memory as Memory
 from .search import Search as Search
 from .source import Source as Source
 from .usage_get_params import UsageGetParams as UsageGetParams
+from .space_list_params import SpaceListParams as SpaceListParams
 from .memory_list_params import MemoryListParams as MemoryListParams
 from .source_list_params import SourceListParams as SourceListParams
 from .usage_get_response import UsageGetResponse as UsageGetResponse

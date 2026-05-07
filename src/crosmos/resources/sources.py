@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 from typing import Iterable, Optional
-from typing_extensions import Literal
 
 import httpx
 
 from ..types import source_list_params, source_ingest_params
-from .._types import Body, Omit, Query, Headers, NoneType, NotGiven, omit, not_given
-from .._utils import path_template, maybe_transform, async_maybe_transform
+from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from .._utils import maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -19,7 +18,6 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.source import Source
 from ..types.source_list_response import SourceListResponse
 from ..types.source_ingest_response import SourceIngestResponse
 
@@ -49,13 +47,11 @@ class SourcesResource(SyncAPIResource):
     def list(
         self,
         *,
-        space_id: int,
         content_type: Optional[str] | Omit = omit,
         extraction_status: Optional[str] | Omit = omit,
         limit: int | Omit = omit,
         offset: int | Omit = omit,
-        order: Literal["asc", "desc"] | Omit = omit,
-        sort_by: Literal["created_at", "updated_at", "sequence"] | Omit = omit,
+        space_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -64,11 +60,12 @@ class SourcesResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SourceListResponse:
         """
-        List sources in a memory space.
+        List sources in the caller's org, sorted by created_at desc.
+
+        If space_id is provided, returns only sources in that space. Otherwise, returns
+        sources across all spaces in the org.
 
         Args:
-          space_id: Memory space to list sources from
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -86,13 +83,11 @@ class SourcesResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
-                        "space_id": space_id,
                         "content_type": content_type,
                         "extraction_status": extraction_status,
                         "limit": limit,
                         "offset": offset,
-                        "order": order,
-                        "sort_by": sort_by,
+                        "space_id": space_id,
                     },
                     source_list_params.SourceListParams,
                 ),
@@ -100,77 +95,11 @@ class SourcesResource(SyncAPIResource):
             cast_to=SourceListResponse,
         )
 
-    def delete(
-        self,
-        source_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
-        """Delete a source document.
-
-        SourceMemory links are cascade-deleted by the DB.
-        Memories derived from this source are unaffected.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
-        return self._delete(
-            path_template("/api/v1/sources/{source_id}", source_id=source_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=NoneType,
-        )
-
-    def get(
-        self,
-        source_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Source:
-        """
-        Get a source by ID.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return self._get(
-            path_template("/api/v1/sources/{source_id}", source_id=source_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=Source,
-        )
-
     def ingest(
         self,
         *,
-        space_id: int,
-        messages: Optional[source_ingest_params.Messages] | Omit = omit,
-        sources: Optional[Iterable[source_ingest_params.Source]] | Omit = omit,
+        sources: Iterable[source_ingest_params.Source],
+        space_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -178,13 +107,15 @@ class SourcesResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SourceIngestResponse:
-        """
-        Accept content for ingestion into the knowledge graph.
+        """Upload raw content sources for ingestion into the knowledge graph.
 
-        Validates input, stores raw Source rows, enqueues a background ingestion job,
-        and returns 202 Accepted with a job_id for polling.
+        Each source
+        is a discrete content payload (text, markdown.) that will be processed by the
+        extraction pipeline.
 
         Args:
+          sources: Array of source payloads to ingest
+
           space_id: Memory space to ingest into
 
           extra_headers: Send extra headers
@@ -199,9 +130,8 @@ class SourcesResource(SyncAPIResource):
             "/api/v1/sources",
             body=maybe_transform(
                 {
-                    "space_id": space_id,
-                    "messages": messages,
                     "sources": sources,
+                    "space_id": space_id,
                 },
                 source_ingest_params.SourceIngestParams,
             ),
@@ -235,13 +165,11 @@ class AsyncSourcesResource(AsyncAPIResource):
     async def list(
         self,
         *,
-        space_id: int,
         content_type: Optional[str] | Omit = omit,
         extraction_status: Optional[str] | Omit = omit,
         limit: int | Omit = omit,
         offset: int | Omit = omit,
-        order: Literal["asc", "desc"] | Omit = omit,
-        sort_by: Literal["created_at", "updated_at", "sequence"] | Omit = omit,
+        space_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -250,11 +178,12 @@ class AsyncSourcesResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SourceListResponse:
         """
-        List sources in a memory space.
+        List sources in the caller's org, sorted by created_at desc.
+
+        If space_id is provided, returns only sources in that space. Otherwise, returns
+        sources across all spaces in the org.
 
         Args:
-          space_id: Memory space to list sources from
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -272,13 +201,11 @@ class AsyncSourcesResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
-                        "space_id": space_id,
                         "content_type": content_type,
                         "extraction_status": extraction_status,
                         "limit": limit,
                         "offset": offset,
-                        "order": order,
-                        "sort_by": sort_by,
+                        "space_id": space_id,
                     },
                     source_list_params.SourceListParams,
                 ),
@@ -286,77 +213,11 @@ class AsyncSourcesResource(AsyncAPIResource):
             cast_to=SourceListResponse,
         )
 
-    async def delete(
-        self,
-        source_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
-        """Delete a source document.
-
-        SourceMemory links are cascade-deleted by the DB.
-        Memories derived from this source are unaffected.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
-        return await self._delete(
-            path_template("/api/v1/sources/{source_id}", source_id=source_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=NoneType,
-        )
-
-    async def get(
-        self,
-        source_id: int,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Source:
-        """
-        Get a source by ID.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return await self._get(
-            path_template("/api/v1/sources/{source_id}", source_id=source_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=Source,
-        )
-
     async def ingest(
         self,
         *,
-        space_id: int,
-        messages: Optional[source_ingest_params.Messages] | Omit = omit,
-        sources: Optional[Iterable[source_ingest_params.Source]] | Omit = omit,
+        sources: Iterable[source_ingest_params.Source],
+        space_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -364,13 +225,15 @@ class AsyncSourcesResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SourceIngestResponse:
-        """
-        Accept content for ingestion into the knowledge graph.
+        """Upload raw content sources for ingestion into the knowledge graph.
 
-        Validates input, stores raw Source rows, enqueues a background ingestion job,
-        and returns 202 Accepted with a job_id for polling.
+        Each source
+        is a discrete content payload (text, markdown.) that will be processed by the
+        extraction pipeline.
 
         Args:
+          sources: Array of source payloads to ingest
+
           space_id: Memory space to ingest into
 
           extra_headers: Send extra headers
@@ -385,9 +248,8 @@ class AsyncSourcesResource(AsyncAPIResource):
             "/api/v1/sources",
             body=await async_maybe_transform(
                 {
-                    "space_id": space_id,
-                    "messages": messages,
                     "sources": sources,
+                    "space_id": space_id,
                 },
                 source_ingest_params.SourceIngestParams,
             ),
@@ -405,12 +267,6 @@ class SourcesResourceWithRawResponse:
         self.list = to_raw_response_wrapper(
             sources.list,
         )
-        self.delete = to_raw_response_wrapper(
-            sources.delete,
-        )
-        self.get = to_raw_response_wrapper(
-            sources.get,
-        )
         self.ingest = to_raw_response_wrapper(
             sources.ingest,
         )
@@ -422,12 +278,6 @@ class AsyncSourcesResourceWithRawResponse:
 
         self.list = async_to_raw_response_wrapper(
             sources.list,
-        )
-        self.delete = async_to_raw_response_wrapper(
-            sources.delete,
-        )
-        self.get = async_to_raw_response_wrapper(
-            sources.get,
         )
         self.ingest = async_to_raw_response_wrapper(
             sources.ingest,
@@ -441,12 +291,6 @@ class SourcesResourceWithStreamingResponse:
         self.list = to_streamed_response_wrapper(
             sources.list,
         )
-        self.delete = to_streamed_response_wrapper(
-            sources.delete,
-        )
-        self.get = to_streamed_response_wrapper(
-            sources.get,
-        )
         self.ingest = to_streamed_response_wrapper(
             sources.ingest,
         )
@@ -458,12 +302,6 @@ class AsyncSourcesResourceWithStreamingResponse:
 
         self.list = async_to_streamed_response_wrapper(
             sources.list,
-        )
-        self.delete = async_to_streamed_response_wrapper(
-            sources.delete,
-        )
-        self.get = async_to_streamed_response_wrapper(
-            sources.get,
         )
         self.ingest = async_to_streamed_response_wrapper(
             sources.ingest,

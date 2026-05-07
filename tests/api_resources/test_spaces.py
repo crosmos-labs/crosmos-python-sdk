@@ -69,6 +69,14 @@ class TestSpaces:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    def test_method_list_with_all_params(self, client: Crosmos) -> None:
+        space = client.spaces.list(
+            name="name",
+        )
+        assert_matches_type(SpaceListResponse, space, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     def test_raw_response_list(self, client: Crosmos) -> None:
         response = client.spaces.with_raw_response.list()
 
@@ -86,74 +94,6 @@ class TestSpaces:
 
             space = response.parse()
             assert_matches_type(SpaceListResponse, space, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_method_delete(self, client: Crosmos) -> None:
-        space = client.spaces.delete(
-            0,
-        )
-        assert space is None
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_raw_response_delete(self, client: Crosmos) -> None:
-        response = client.spaces.with_raw_response.delete(
-            0,
-        )
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        space = response.parse()
-        assert space is None
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_streaming_response_delete(self, client: Crosmos) -> None:
-        with client.spaces.with_streaming_response.delete(
-            0,
-        ) as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            space = response.parse()
-            assert space is None
-
-        assert cast(Any, response.is_closed) is True
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_method_get(self, client: Crosmos) -> None:
-        space = client.spaces.get(
-            0,
-        )
-        assert_matches_type(Space, space, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_raw_response_get(self, client: Crosmos) -> None:
-        response = client.spaces.with_raw_response.get(
-            0,
-        )
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        space = response.parse()
-        assert_matches_type(Space, space, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_streaming_response_get(self, client: Crosmos) -> None:
-        with client.spaces.with_streaming_response.get(
-            0,
-        ) as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            space = response.parse()
-            assert_matches_type(Space, space, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -215,6 +155,14 @@ class TestAsyncSpaces:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    async def test_method_list_with_all_params(self, async_client: AsyncCrosmos) -> None:
+        space = await async_client.spaces.list(
+            name="name",
+        )
+        assert_matches_type(SpaceListResponse, space, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     async def test_raw_response_list(self, async_client: AsyncCrosmos) -> None:
         response = await async_client.spaces.with_raw_response.list()
 
@@ -232,73 +180,5 @@ class TestAsyncSpaces:
 
             space = await response.parse()
             assert_matches_type(SpaceListResponse, space, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_method_delete(self, async_client: AsyncCrosmos) -> None:
-        space = await async_client.spaces.delete(
-            0,
-        )
-        assert space is None
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_raw_response_delete(self, async_client: AsyncCrosmos) -> None:
-        response = await async_client.spaces.with_raw_response.delete(
-            0,
-        )
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        space = await response.parse()
-        assert space is None
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_streaming_response_delete(self, async_client: AsyncCrosmos) -> None:
-        async with async_client.spaces.with_streaming_response.delete(
-            0,
-        ) as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            space = await response.parse()
-            assert space is None
-
-        assert cast(Any, response.is_closed) is True
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_method_get(self, async_client: AsyncCrosmos) -> None:
-        space = await async_client.spaces.get(
-            0,
-        )
-        assert_matches_type(Space, space, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_raw_response_get(self, async_client: AsyncCrosmos) -> None:
-        response = await async_client.spaces.with_raw_response.get(
-            0,
-        )
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        space = await response.parse()
-        assert_matches_type(Space, space, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_streaming_response_get(self, async_client: AsyncCrosmos) -> None:
-        async with async_client.spaces.with_streaming_response.get(
-            0,
-        ) as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            space = await response.parse()
-            assert_matches_type(Space, space, path=["response"])
 
         assert cast(Any, response.is_closed) is True

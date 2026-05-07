@@ -1,32 +1,60 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List
 from datetime import date
 
 from .._models import BaseModel
 
-__all__ = ["UsageGetResponse", "Space"]
+__all__ = ["UsageGetResponse", "Queries", "Spaces", "Tokens"]
 
 
-class Space(BaseModel):
-    """Usage breakdown for a single memory space."""
+class Queries(BaseModel):
+    """Used / limit / remaining triple. ``-1`` limit means unlimited."""
 
-    search_queries: int
+    limit: int
 
-    space_id: int
+    remaining: int
 
-    tokens_ingested: int
+    used: int
+
+
+class Spaces(BaseModel):
+    """Used / limit / remaining triple. ``-1`` limit means unlimited."""
+
+    limit: int
+
+    remaining: int
+
+    used: int
+
+
+class Tokens(BaseModel):
+    """Used / limit / remaining triple. ``-1`` limit means unlimited."""
+
+    limit: int
+
+    remaining: int
+
+    used: int
 
 
 class UsageGetResponse(BaseModel):
-    """Aggregated usage response."""
+    """Aggregated org-level usage and current plan limits."""
 
     period_end: date
 
     period_start: date
 
-    spaces: List[Space]
+    plan: str
 
-    total_search_queries: int
+    queries: Queries
+    """Used / limit / remaining triple. `-1` limit means unlimited."""
 
-    total_tokens_ingested: int
+    rate_limit_per_day: int
+
+    rate_limit_rpm: int
+
+    spaces: Spaces
+    """Used / limit / remaining triple. `-1` limit means unlimited."""
+
+    tokens: Tokens
+    """Used / limit / remaining triple. `-1` limit means unlimited."""

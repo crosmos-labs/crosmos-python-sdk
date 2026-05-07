@@ -34,7 +34,7 @@ client = Crosmos(
 
 search = client.search.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 )
 print(search.candidates)
 ```
@@ -61,7 +61,7 @@ client = AsyncCrosmos(
 async def main() -> None:
     search = await client.search.hybrid(
         query="What is my primary language?",
-        space_id=0,
+        space_id="<your-space-uuid>",
     )
     print(search.candidates)
 
@@ -98,7 +98,7 @@ async def main() -> None:
     ) as client:
         search = await client.search.hybrid(
             query="What is my primary language?",
-            space_id=0,
+            space_id="<your-space-uuid>",
         )
         print(search.candidates)
 
@@ -114,29 +114,6 @@ Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typ
 - Converting to a dictionary, `model.to_dict()`
 
 Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
-
-## Nested params
-
-Nested parameters are dictionaries, typed using `TypedDict`, for example:
-
-```python
-from crosmos import Crosmos
-
-client = Crosmos()
-
-response = client.sources.ingest(
-    space_id=0,
-    messages={
-        "messages": [
-            {
-                "content": "x",
-                "role": "x",
-            }
-        ]
-    },
-)
-print(response.messages)
-```
 
 ## Handling errors
 
@@ -156,7 +133,7 @@ client = Crosmos()
 try:
     client.search.hybrid(
         query="What is my primary language?",
-        space_id=0,
+        space_id="<your-space-uuid>",
     )
 except crosmos.APIConnectionError as e:
     print("The server could not be reached")
@@ -202,7 +179,7 @@ client = Crosmos(
 # Or, configure per-request:
 client.with_options(max_retries=5).search.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 )
 ```
 
@@ -228,7 +205,7 @@ client = Crosmos(
 # Override per-request:
 client.with_options(timeout=5.0).search.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 )
 ```
 
@@ -272,7 +249,7 @@ from crosmos import Crosmos
 client = Crosmos()
 response = client.search.with_raw_response.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 )
 print(response.headers.get('X-My-Header'))
 
@@ -293,7 +270,7 @@ To stream the response body, use `.with_streaming_response` instead, which requi
 ```python
 with client.search.with_streaming_response.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 ) as response:
     print(response.headers.get("X-My-Header"))
 

@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import Dict, Optional
+from typing import Optional
 from datetime import datetime
 
 from .._models import BaseModel
@@ -9,7 +9,7 @@ __all__ = ["Source"]
 
 
 class Source(BaseModel):
-    id: int
+    id: str
 
     content: str
 
@@ -19,14 +19,12 @@ class Source(BaseModel):
 
     extraction_status: str
 
-    meta: Optional[Dict[str, object]] = None
-
     sequence: int
 
-    space_id: int
+    space_id: str
 
     token_count: int
 
     updated_at: datetime
 
-    uuid: str
+    meta: Optional[object] = None

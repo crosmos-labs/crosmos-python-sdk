@@ -9,9 +9,7 @@ from crosmos.types import Space, SpaceListResponse
 Methods:
 
 - <code title="post /api/v1/spaces">client.spaces.<a href="./src/crosmos/resources/spaces.py">create</a>(\*\*<a href="src/crosmos/types/space_create_params.py">params</a>) -> <a href="./src/crosmos/types/space.py">Space</a></code>
-- <code title="get /api/v1/spaces">client.spaces.<a href="./src/crosmos/resources/spaces.py">list</a>() -> <a href="./src/crosmos/types/space_list_response.py">SpaceListResponse</a></code>
-- <code title="delete /api/v1/spaces/{space_id}">client.spaces.<a href="./src/crosmos/resources/spaces.py">delete</a>(space_id) -> None</code>
-- <code title="get /api/v1/spaces/{space_id}">client.spaces.<a href="./src/crosmos/resources/spaces.py">get</a>(space_id) -> <a href="./src/crosmos/types/space.py">Space</a></code>
+- <code title="get /api/v1/spaces">client.spaces.<a href="./src/crosmos/resources/spaces.py">list</a>(\*\*<a href="src/crosmos/types/space_list_params.py">params</a>) -> <a href="./src/crosmos/types/space_list_response.py">SpaceListResponse</a></code>
 
 # Search
 
@@ -36,8 +34,6 @@ from crosmos.types import Source, SourceListResponse, SourceIngestResponse
 Methods:
 
 - <code title="get /api/v1/sources">client.sources.<a href="./src/crosmos/resources/sources.py">list</a>(\*\*<a href="src/crosmos/types/source_list_params.py">params</a>) -> <a href="./src/crosmos/types/source_list_response.py">SourceListResponse</a></code>
-- <code title="delete /api/v1/sources/{source_id}">client.sources.<a href="./src/crosmos/resources/sources.py">delete</a>(source_id) -> None</code>
-- <code title="get /api/v1/sources/{source_id}">client.sources.<a href="./src/crosmos/resources/sources.py">get</a>(source_id) -> <a href="./src/crosmos/types/source.py">Source</a></code>
 - <code title="post /api/v1/sources">client.sources.<a href="./src/crosmos/resources/sources.py">ingest</a>(\*\*<a href="src/crosmos/types/source_ingest_params.py">params</a>) -> <a href="./src/crosmos/types/source_ingest_response.py">SourceIngestResponse</a></code>
 
 # Memories
@@ -51,7 +47,6 @@ from crosmos.types import Memory, MemoryListResponse
 Methods:
 
 - <code title="get /api/v1/memories">client.memories.<a href="./src/crosmos/resources/memories.py">list</a>(\*\*<a href="src/crosmos/types/memory_list_params.py">params</a>) -> <a href="./src/crosmos/types/memory_list_response.py">MemoryListResponse</a></code>
-- <code title="get /api/v1/memories/{memory_id}">client.memories.<a href="./src/crosmos/resources/memories.py">get</a>(memory_id) -> <a href="./src/crosmos/types/memory.py">Memory</a></code>
 
 # Usage
 

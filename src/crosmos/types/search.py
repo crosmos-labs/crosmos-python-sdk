@@ -9,34 +9,31 @@ __all__ = ["Search", "Candidate"]
 
 
 class Candidate(BaseModel):
-    """A memory candidate in search results."""
-
     content: str
 
     created_at: datetime
 
     event_time: Optional[datetime] = None
 
-    final_score: float
-
-    fused_score: float
-
-    importance_score: Optional[float] = None
-
-    memory_id: int
+    memory_id: str
 
     memory_type: str
 
-    persistence_score: float
+    recorded_at: datetime
 
-    source_signals: List[str]
+    score: float
 
-    source_chunk: Optional[str] = None
+    source: Optional[str] = None
+    """Original source text the memory was extracted from"""
 
 
 class Search(BaseModel):
-    """Search response payload."""
-
     candidates: List[Candidate]
 
     query: str
+
+    took_ms: float
+    """Search execution time in milliseconds"""
+
+    total: int
+    """Total number of candidates returned"""
