@@ -36,14 +36,16 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import jobs, usage, health, search, spaces, sources, memories
+    from .resources import jobs, usage, health, search, spaces, sources, entities, memories, conversations
     from .resources.jobs import JobsResource, AsyncJobsResource
     from .resources.usage import UsageResource, AsyncUsageResource
     from .resources.health import HealthResource, AsyncHealthResource
     from .resources.search import SearchResource, AsyncSearchResource
     from .resources.spaces import SpacesResource, AsyncSpacesResource
     from .resources.sources import SourcesResource, AsyncSourcesResource
+    from .resources.entities import EntitiesResource, AsyncEntitiesResource
     from .resources.memories import MemoriesResource, AsyncMemoriesResource
+    from .resources.conversations import ConversationsResource, AsyncConversationsResource
 
 __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Crosmos", "AsyncCrosmos", "Client", "AsyncClient"]
 
@@ -137,16 +139,28 @@ class Crosmos(SyncAPIClient):
         return MemoriesResource(self)
 
     @cached_property
-    def usage(self) -> UsageResource:
-        from .resources.usage import UsageResource
+    def entities(self) -> EntitiesResource:
+        from .resources.entities import EntitiesResource
 
-        return UsageResource(self)
+        return EntitiesResource(self)
+
+    @cached_property
+    def conversations(self) -> ConversationsResource:
+        from .resources.conversations import ConversationsResource
+
+        return ConversationsResource(self)
 
     @cached_property
     def jobs(self) -> JobsResource:
         from .resources.jobs import JobsResource
 
         return JobsResource(self)
+
+    @cached_property
+    def usage(self) -> UsageResource:
+        from .resources.usage import UsageResource
+
+        return UsageResource(self)
 
     @cached_property
     def health(self) -> HealthResource:
@@ -361,16 +375,28 @@ class AsyncCrosmos(AsyncAPIClient):
         return AsyncMemoriesResource(self)
 
     @cached_property
-    def usage(self) -> AsyncUsageResource:
-        from .resources.usage import AsyncUsageResource
+    def entities(self) -> AsyncEntitiesResource:
+        from .resources.entities import AsyncEntitiesResource
 
-        return AsyncUsageResource(self)
+        return AsyncEntitiesResource(self)
+
+    @cached_property
+    def conversations(self) -> AsyncConversationsResource:
+        from .resources.conversations import AsyncConversationsResource
+
+        return AsyncConversationsResource(self)
 
     @cached_property
     def jobs(self) -> AsyncJobsResource:
         from .resources.jobs import AsyncJobsResource
 
         return AsyncJobsResource(self)
+
+    @cached_property
+    def usage(self) -> AsyncUsageResource:
+        from .resources.usage import AsyncUsageResource
+
+        return AsyncUsageResource(self)
 
     @cached_property
     def health(self) -> AsyncHealthResource:
@@ -527,16 +553,28 @@ class CrosmosWithRawResponse:
         return MemoriesResourceWithRawResponse(self._client.memories)
 
     @cached_property
-    def usage(self) -> usage.UsageResourceWithRawResponse:
-        from .resources.usage import UsageResourceWithRawResponse
+    def entities(self) -> entities.EntitiesResourceWithRawResponse:
+        from .resources.entities import EntitiesResourceWithRawResponse
 
-        return UsageResourceWithRawResponse(self._client.usage)
+        return EntitiesResourceWithRawResponse(self._client.entities)
+
+    @cached_property
+    def conversations(self) -> conversations.ConversationsResourceWithRawResponse:
+        from .resources.conversations import ConversationsResourceWithRawResponse
+
+        return ConversationsResourceWithRawResponse(self._client.conversations)
 
     @cached_property
     def jobs(self) -> jobs.JobsResourceWithRawResponse:
         from .resources.jobs import JobsResourceWithRawResponse
 
         return JobsResourceWithRawResponse(self._client.jobs)
+
+    @cached_property
+    def usage(self) -> usage.UsageResourceWithRawResponse:
+        from .resources.usage import UsageResourceWithRawResponse
+
+        return UsageResourceWithRawResponse(self._client.usage)
 
     @cached_property
     def health(self) -> health.HealthResourceWithRawResponse:
@@ -576,16 +614,28 @@ class AsyncCrosmosWithRawResponse:
         return AsyncMemoriesResourceWithRawResponse(self._client.memories)
 
     @cached_property
-    def usage(self) -> usage.AsyncUsageResourceWithRawResponse:
-        from .resources.usage import AsyncUsageResourceWithRawResponse
+    def entities(self) -> entities.AsyncEntitiesResourceWithRawResponse:
+        from .resources.entities import AsyncEntitiesResourceWithRawResponse
 
-        return AsyncUsageResourceWithRawResponse(self._client.usage)
+        return AsyncEntitiesResourceWithRawResponse(self._client.entities)
+
+    @cached_property
+    def conversations(self) -> conversations.AsyncConversationsResourceWithRawResponse:
+        from .resources.conversations import AsyncConversationsResourceWithRawResponse
+
+        return AsyncConversationsResourceWithRawResponse(self._client.conversations)
 
     @cached_property
     def jobs(self) -> jobs.AsyncJobsResourceWithRawResponse:
         from .resources.jobs import AsyncJobsResourceWithRawResponse
 
         return AsyncJobsResourceWithRawResponse(self._client.jobs)
+
+    @cached_property
+    def usage(self) -> usage.AsyncUsageResourceWithRawResponse:
+        from .resources.usage import AsyncUsageResourceWithRawResponse
+
+        return AsyncUsageResourceWithRawResponse(self._client.usage)
 
     @cached_property
     def health(self) -> health.AsyncHealthResourceWithRawResponse:
@@ -625,16 +675,28 @@ class CrosmosWithStreamedResponse:
         return MemoriesResourceWithStreamingResponse(self._client.memories)
 
     @cached_property
-    def usage(self) -> usage.UsageResourceWithStreamingResponse:
-        from .resources.usage import UsageResourceWithStreamingResponse
+    def entities(self) -> entities.EntitiesResourceWithStreamingResponse:
+        from .resources.entities import EntitiesResourceWithStreamingResponse
 
-        return UsageResourceWithStreamingResponse(self._client.usage)
+        return EntitiesResourceWithStreamingResponse(self._client.entities)
+
+    @cached_property
+    def conversations(self) -> conversations.ConversationsResourceWithStreamingResponse:
+        from .resources.conversations import ConversationsResourceWithStreamingResponse
+
+        return ConversationsResourceWithStreamingResponse(self._client.conversations)
 
     @cached_property
     def jobs(self) -> jobs.JobsResourceWithStreamingResponse:
         from .resources.jobs import JobsResourceWithStreamingResponse
 
         return JobsResourceWithStreamingResponse(self._client.jobs)
+
+    @cached_property
+    def usage(self) -> usage.UsageResourceWithStreamingResponse:
+        from .resources.usage import UsageResourceWithStreamingResponse
+
+        return UsageResourceWithStreamingResponse(self._client.usage)
 
     @cached_property
     def health(self) -> health.HealthResourceWithStreamingResponse:
@@ -674,16 +736,28 @@ class AsyncCrosmosWithStreamedResponse:
         return AsyncMemoriesResourceWithStreamingResponse(self._client.memories)
 
     @cached_property
-    def usage(self) -> usage.AsyncUsageResourceWithStreamingResponse:
-        from .resources.usage import AsyncUsageResourceWithStreamingResponse
+    def entities(self) -> entities.AsyncEntitiesResourceWithStreamingResponse:
+        from .resources.entities import AsyncEntitiesResourceWithStreamingResponse
 
-        return AsyncUsageResourceWithStreamingResponse(self._client.usage)
+        return AsyncEntitiesResourceWithStreamingResponse(self._client.entities)
+
+    @cached_property
+    def conversations(self) -> conversations.AsyncConversationsResourceWithStreamingResponse:
+        from .resources.conversations import AsyncConversationsResourceWithStreamingResponse
+
+        return AsyncConversationsResourceWithStreamingResponse(self._client.conversations)
 
     @cached_property
     def jobs(self) -> jobs.AsyncJobsResourceWithStreamingResponse:
         from .resources.jobs import AsyncJobsResourceWithStreamingResponse
 
         return AsyncJobsResourceWithStreamingResponse(self._client.jobs)
+
+    @cached_property
+    def usage(self) -> usage.AsyncUsageResourceWithStreamingResponse:
+        from .resources.usage import AsyncUsageResourceWithStreamingResponse
+
+        return AsyncUsageResourceWithStreamingResponse(self._client.usage)
 
     @cached_property
     def health(self) -> health.AsyncHealthResourceWithStreamingResponse:

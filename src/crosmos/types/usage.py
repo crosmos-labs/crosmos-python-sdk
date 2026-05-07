@@ -4,7 +4,7 @@ from datetime import date
 
 from .._models import BaseModel
 
-__all__ = ["UsageGetResponse", "Queries", "Spaces", "Tokens"]
+__all__ = ["Usage", "Queries", "Spaces", "Tokens"]
 
 
 class Queries(BaseModel):
@@ -37,7 +37,7 @@ class Tokens(BaseModel):
     used: int
 
 
-class UsageGetResponse(BaseModel):
+class Usage(BaseModel):
     """Aggregated org-level usage and current plan limits."""
 
     period_end: date

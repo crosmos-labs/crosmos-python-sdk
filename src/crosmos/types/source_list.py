@@ -6,7 +6,7 @@ from datetime import datetime
 from .source import Source
 from .._models import BaseModel
 
-__all__ = ["SourceListResponse", "SourcesUnionMember0"]
+__all__ = ["SourceList", "SourcesUnionMember0"]
 
 
 class SourcesUnionMember0(BaseModel):
@@ -32,7 +32,7 @@ class SourcesUnionMember0(BaseModel):
     meta: Optional[object] = None
 
 
-class SourceListResponse(BaseModel):
+class SourceList(BaseModel):
     count: int
 
     sources: Union[List[SourcesUnionMember0], List[Source]]

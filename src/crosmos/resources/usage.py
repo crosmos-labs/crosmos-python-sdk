@@ -18,8 +18,8 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..types.usage import Usage
 from .._base_client import make_request_options
-from ..types.usage_get_response import UsageGetResponse
 
 __all__ = ["UsageResource", "AsyncUsageResource"]
 
@@ -55,7 +55,7 @@ class UsageResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> UsageGetResponse:
+    ) -> Usage:
         """
         Return org-level usage for the active billing period and plan limits.
 
@@ -87,7 +87,7 @@ class UsageResource(SyncAPIResource):
                     usage_get_params.UsageGetParams,
                 ),
             ),
-            cast_to=UsageGetResponse,
+            cast_to=Usage,
         )
 
 
@@ -122,7 +122,7 @@ class AsyncUsageResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> UsageGetResponse:
+    ) -> Usage:
         """
         Return org-level usage for the active billing period and plan limits.
 
@@ -154,7 +154,7 @@ class AsyncUsageResource(AsyncAPIResource):
                     usage_get_params.UsageGetParams,
                 ),
             ),
-            cast_to=UsageGetResponse,
+            cast_to=Usage,
         )
 
 
