@@ -30,7 +30,7 @@ class SearchResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/crosmos-labs/crosmos-ts-sdk#accessing-raw-response-data-eg-headers
         """
         return SearchResourceWithRawResponse(self)
 
@@ -39,7 +39,7 @@ class SearchResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#with_streaming_response
+        For more information, see https://www.github.com/crosmos-labs/crosmos-ts-sdk#with_streaming_response
         """
         return SearchResourceWithStreamingResponse(self)
 
@@ -119,7 +119,7 @@ class AsyncSearchResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/crosmos-labs/crosmos-ts-sdk#accessing-raw-response-data-eg-headers
         """
         return AsyncSearchResourceWithRawResponse(self)
 
@@ -128,7 +128,7 @@ class AsyncSearchResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#with_streaming_response
+        For more information, see https://www.github.com/crosmos-labs/crosmos-ts-sdk#with_streaming_response
         """
         return AsyncSearchResourceWithStreamingResponse(self)
 
