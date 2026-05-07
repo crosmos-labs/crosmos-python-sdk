@@ -9,7 +9,7 @@ import pytest
 
 from crosmos import Crosmos, AsyncCrosmos
 from tests.utils import assert_matches_type
-from crosmos.types import JobGetStatusResponse
+from crosmos.types import Job
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -23,7 +23,7 @@ class TestJobs:
         job = client.jobs.get_status(
             "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
-        assert_matches_type(JobGetStatusResponse, job, path=["response"])
+        assert_matches_type(Job, job, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -35,7 +35,7 @@ class TestJobs:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         job = response.parse()
-        assert_matches_type(JobGetStatusResponse, job, path=["response"])
+        assert_matches_type(Job, job, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -47,7 +47,7 @@ class TestJobs:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             job = response.parse()
-            assert_matches_type(JobGetStatusResponse, job, path=["response"])
+            assert_matches_type(Job, job, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -71,7 +71,7 @@ class TestAsyncJobs:
         job = await async_client.jobs.get_status(
             "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
-        assert_matches_type(JobGetStatusResponse, job, path=["response"])
+        assert_matches_type(Job, job, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -83,7 +83,7 @@ class TestAsyncJobs:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         job = await response.parse()
-        assert_matches_type(JobGetStatusResponse, job, path=["response"])
+        assert_matches_type(Job, job, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -95,7 +95,7 @@ class TestAsyncJobs:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             job = await response.parse()
-            assert_matches_type(JobGetStatusResponse, job, path=["response"])
+            assert_matches_type(Job, job, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

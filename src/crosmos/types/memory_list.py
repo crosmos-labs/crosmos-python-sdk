@@ -5,10 +5,10 @@ from typing import List
 from .memory import Memory
 from .._models import BaseModel
 
-__all__ = ["MemoryListResponse"]
+__all__ = ["MemoryList"]
 
 
-class MemoryListResponse(BaseModel):
+class MemoryList(BaseModel):
     count: int
 
     memories: List[Memory]

@@ -6,9 +6,9 @@ from typing import Iterable, Optional
 
 import httpx
 
-from ..types import source_list_params, source_ingest_params
-from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from ..types import source_get_params, source_list_params, source_delete_params, source_ingest_params
+from .._types import Body, Omit, Query, Headers, NoneType, NotGiven, omit, not_given
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -18,8 +18,9 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.source_list_response import SourceListResponse
-from ..types.source_ingest_response import SourceIngestResponse
+from ..types.source import Source
+from ..types.source_list import SourceList
+from ..types.ingest_accepted import IngestAccepted
 
 __all__ = ["SourcesResource", "AsyncSourcesResource"]
 
@@ -58,7 +59,7 @@ class SourcesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SourceListResponse:
+    ) -> SourceList:
         """
         List sources in the caller's org, sorted by created_at desc.
 
@@ -92,7 +93,84 @@ class SourcesResource(SyncAPIResource):
                     source_list_params.SourceListParams,
                 ),
             ),
-            cast_to=SourceListResponse,
+            cast_to=SourceList,
+        )
+
+    def delete(
+        self,
+        source_uuid: str,
+        *,
+        space_uuid: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> None:
+        """
+        Delete a source document by UUID.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not source_uuid:
+            raise ValueError(f"Expected a non-empty value for `source_uuid` but received {source_uuid!r}")
+        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
+        return self._delete(
+            path_template("/api/v1/sources/{source_uuid}", source_uuid=source_uuid),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"space_uuid": space_uuid}, source_delete_params.SourceDeleteParams),
+            ),
+            cast_to=NoneType,
+        )
+
+    def get(
+        self,
+        source_uuid: str,
+        *,
+        space_uuid: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> Source:
+        """
+        Get a source by UUID.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not source_uuid:
+            raise ValueError(f"Expected a non-empty value for `source_uuid` but received {source_uuid!r}")
+        return self._get(
+            path_template("/api/v1/sources/{source_uuid}", source_uuid=source_uuid),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"space_uuid": space_uuid}, source_get_params.SourceGetParams),
+            ),
+            cast_to=Source,
         )
 
     def ingest(
@@ -106,7 +184,7 @@ class SourcesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SourceIngestResponse:
+    ) -> IngestAccepted:
         """Upload raw content sources for ingestion into the knowledge graph.
 
         Each source
@@ -138,7 +216,7 @@ class SourcesResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SourceIngestResponse,
+            cast_to=IngestAccepted,
         )
 
 
@@ -176,7 +254,7 @@ class AsyncSourcesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SourceListResponse:
+    ) -> SourceList:
         """
         List sources in the caller's org, sorted by created_at desc.
 
@@ -210,7 +288,84 @@ class AsyncSourcesResource(AsyncAPIResource):
                     source_list_params.SourceListParams,
                 ),
             ),
-            cast_to=SourceListResponse,
+            cast_to=SourceList,
+        )
+
+    async def delete(
+        self,
+        source_uuid: str,
+        *,
+        space_uuid: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> None:
+        """
+        Delete a source document by UUID.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not source_uuid:
+            raise ValueError(f"Expected a non-empty value for `source_uuid` but received {source_uuid!r}")
+        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
+        return await self._delete(
+            path_template("/api/v1/sources/{source_uuid}", source_uuid=source_uuid),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"space_uuid": space_uuid}, source_delete_params.SourceDeleteParams),
+            ),
+            cast_to=NoneType,
+        )
+
+    async def get(
+        self,
+        source_uuid: str,
+        *,
+        space_uuid: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> Source:
+        """
+        Get a source by UUID.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not source_uuid:
+            raise ValueError(f"Expected a non-empty value for `source_uuid` but received {source_uuid!r}")
+        return await self._get(
+            path_template("/api/v1/sources/{source_uuid}", source_uuid=source_uuid),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"space_uuid": space_uuid}, source_get_params.SourceGetParams),
+            ),
+            cast_to=Source,
         )
 
     async def ingest(
@@ -224,7 +379,7 @@ class AsyncSourcesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SourceIngestResponse:
+    ) -> IngestAccepted:
         """Upload raw content sources for ingestion into the knowledge graph.
 
         Each source
@@ -256,7 +411,7 @@ class AsyncSourcesResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SourceIngestResponse,
+            cast_to=IngestAccepted,
         )
 
 
@@ -266,6 +421,12 @@ class SourcesResourceWithRawResponse:
 
         self.list = to_raw_response_wrapper(
             sources.list,
+        )
+        self.delete = to_raw_response_wrapper(
+            sources.delete,
+        )
+        self.get = to_raw_response_wrapper(
+            sources.get,
         )
         self.ingest = to_raw_response_wrapper(
             sources.ingest,
@@ -279,6 +440,12 @@ class AsyncSourcesResourceWithRawResponse:
         self.list = async_to_raw_response_wrapper(
             sources.list,
         )
+        self.delete = async_to_raw_response_wrapper(
+            sources.delete,
+        )
+        self.get = async_to_raw_response_wrapper(
+            sources.get,
+        )
         self.ingest = async_to_raw_response_wrapper(
             sources.ingest,
         )
@@ -291,6 +458,12 @@ class SourcesResourceWithStreamingResponse:
         self.list = to_streamed_response_wrapper(
             sources.list,
         )
+        self.delete = to_streamed_response_wrapper(
+            sources.delete,
+        )
+        self.get = to_streamed_response_wrapper(
+            sources.get,
+        )
         self.ingest = to_streamed_response_wrapper(
             sources.ingest,
         )
@@ -302,6 +475,12 @@ class AsyncSourcesResourceWithStreamingResponse:
 
         self.list = async_to_streamed_response_wrapper(
             sources.list,
+        )
+        self.delete = async_to_streamed_response_wrapper(
+            sources.delete,
+        )
+        self.get = async_to_streamed_response_wrapper(
+            sources.get,
         )
         self.ingest = async_to_streamed_response_wrapper(
             sources.ingest,

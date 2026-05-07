@@ -7,8 +7,8 @@ from typing_extensions import Literal
 
 import httpx
 
-from ..types import memory_get_params, memory_list_params, memory_delete_params
-from .._types import Body, Omit, Query, Headers, NoneType, NotGiven, omit, not_given
+from ..types import entity_get_params, entity_list_params
+from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
@@ -19,53 +19,57 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.memory import Memory
-from ..types.memory_list import MemoryList
+from ..types.entity_list import EntityList
+from ..types.entity_detail import EntityDetail
 
-__all__ = ["MemoriesResource", "AsyncMemoriesResource"]
+__all__ = ["EntitiesResource", "AsyncEntitiesResource"]
 
 
-class MemoriesResource(SyncAPIResource):
+class EntitiesResource(SyncAPIResource):
     @cached_property
-    def with_raw_response(self) -> MemoriesResourceWithRawResponse:
+    def with_raw_response(self) -> EntitiesResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
         For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#accessing-raw-response-data-eg-headers
         """
-        return MemoriesResourceWithRawResponse(self)
+        return EntitiesResourceWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> MemoriesResourceWithStreamingResponse:
+    def with_streaming_response(self) -> EntitiesResourceWithStreamingResponse:
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
         For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#with_streaming_response
         """
-        return MemoriesResourceWithStreamingResponse(self)
+        return EntitiesResourceWithStreamingResponse(self)
 
     def list(
         self,
         *,
         space_uuid: str,
+        entity_type: Optional[str] | Omit = omit,
         limit: int | Omit = omit,
-        memory_type: Optional[Literal["viewpoint", "semantic", "episode"]] | Omit = omit,
         offset: int | Omit = omit,
         order: Literal["asc", "desc"] | Omit = omit,
-        sort_by: Literal["created_at", "importance_score", "event_time", "last_accessed_at", "access_frequency"]
-        | Omit = omit,
+        q: Optional[str] | Omit = omit,
+        sort_by: Literal["name", "edge_count", "created_at"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> MemoryList:
+    ) -> EntityList:
         """
-        List memories in a memory space.
+        List Entities
 
         Args:
+          entity_type: Filter by entity type
+
+          q: Search entities by name
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -75,7 +79,7 @@ class MemoriesResource(SyncAPIResource):
           timeout: Override the client-level default timeout for this request, in seconds
         """
         return self._get(
-            "/api/v1/memories",
+            "/api/v1/entities",
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -84,60 +88,22 @@ class MemoriesResource(SyncAPIResource):
                 query=maybe_transform(
                     {
                         "space_uuid": space_uuid,
+                        "entity_type": entity_type,
                         "limit": limit,
-                        "memory_type": memory_type,
                         "offset": offset,
                         "order": order,
+                        "q": q,
                         "sort_by": sort_by,
                     },
-                    memory_list_params.MemoryListParams,
+                    entity_list_params.EntityListParams,
                 ),
             ),
-            cast_to=MemoryList,
-        )
-
-    def delete(
-        self,
-        memory_uuid: str,
-        *,
-        space_uuid: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
-        """
-        Soft-delete a memory and cascade to all edges whose provenance is this memory.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not memory_uuid:
-            raise ValueError(f"Expected a non-empty value for `memory_uuid` but received {memory_uuid!r}")
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
-        return self._delete(
-            path_template("/api/v1/memories/{memory_uuid}", memory_uuid=memory_uuid),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform({"space_uuid": space_uuid}, memory_delete_params.MemoryDeleteParams),
-            ),
-            cast_to=NoneType,
+            cast_to=EntityList,
         )
 
     def get(
         self,
-        memory_uuid: str,
+        entity_uuid: str,
         *,
         space_uuid: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -146,9 +112,9 @@ class MemoriesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Memory:
+    ) -> EntityDetail:
         """
-        Get a memory by UUID.
+        Get Entity
 
         Args:
           extra_headers: Send extra headers
@@ -159,62 +125,66 @@ class MemoriesResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        if not memory_uuid:
-            raise ValueError(f"Expected a non-empty value for `memory_uuid` but received {memory_uuid!r}")
+        if not entity_uuid:
+            raise ValueError(f"Expected a non-empty value for `entity_uuid` but received {entity_uuid!r}")
         return self._get(
-            path_template("/api/v1/memories/{memory_uuid}", memory_uuid=memory_uuid),
+            path_template("/api/v1/entities/{entity_uuid}", entity_uuid=entity_uuid),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=maybe_transform({"space_uuid": space_uuid}, memory_get_params.MemoryGetParams),
+                query=maybe_transform({"space_uuid": space_uuid}, entity_get_params.EntityGetParams),
             ),
-            cast_to=Memory,
+            cast_to=EntityDetail,
         )
 
 
-class AsyncMemoriesResource(AsyncAPIResource):
+class AsyncEntitiesResource(AsyncAPIResource):
     @cached_property
-    def with_raw_response(self) -> AsyncMemoriesResourceWithRawResponse:
+    def with_raw_response(self) -> AsyncEntitiesResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
         For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#accessing-raw-response-data-eg-headers
         """
-        return AsyncMemoriesResourceWithRawResponse(self)
+        return AsyncEntitiesResourceWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> AsyncMemoriesResourceWithStreamingResponse:
+    def with_streaming_response(self) -> AsyncEntitiesResourceWithStreamingResponse:
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
         For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#with_streaming_response
         """
-        return AsyncMemoriesResourceWithStreamingResponse(self)
+        return AsyncEntitiesResourceWithStreamingResponse(self)
 
     async def list(
         self,
         *,
         space_uuid: str,
+        entity_type: Optional[str] | Omit = omit,
         limit: int | Omit = omit,
-        memory_type: Optional[Literal["viewpoint", "semantic", "episode"]] | Omit = omit,
         offset: int | Omit = omit,
         order: Literal["asc", "desc"] | Omit = omit,
-        sort_by: Literal["created_at", "importance_score", "event_time", "last_accessed_at", "access_frequency"]
-        | Omit = omit,
+        q: Optional[str] | Omit = omit,
+        sort_by: Literal["name", "edge_count", "created_at"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> MemoryList:
+    ) -> EntityList:
         """
-        List memories in a memory space.
+        List Entities
 
         Args:
+          entity_type: Filter by entity type
+
+          q: Search entities by name
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -224,7 +194,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
           timeout: Override the client-level default timeout for this request, in seconds
         """
         return await self._get(
-            "/api/v1/memories",
+            "/api/v1/entities",
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -233,60 +203,22 @@ class AsyncMemoriesResource(AsyncAPIResource):
                 query=await async_maybe_transform(
                     {
                         "space_uuid": space_uuid,
+                        "entity_type": entity_type,
                         "limit": limit,
-                        "memory_type": memory_type,
                         "offset": offset,
                         "order": order,
+                        "q": q,
                         "sort_by": sort_by,
                     },
-                    memory_list_params.MemoryListParams,
+                    entity_list_params.EntityListParams,
                 ),
             ),
-            cast_to=MemoryList,
-        )
-
-    async def delete(
-        self,
-        memory_uuid: str,
-        *,
-        space_uuid: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
-        """
-        Soft-delete a memory and cascade to all edges whose provenance is this memory.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not memory_uuid:
-            raise ValueError(f"Expected a non-empty value for `memory_uuid` but received {memory_uuid!r}")
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
-        return await self._delete(
-            path_template("/api/v1/memories/{memory_uuid}", memory_uuid=memory_uuid),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform({"space_uuid": space_uuid}, memory_delete_params.MemoryDeleteParams),
-            ),
-            cast_to=NoneType,
+            cast_to=EntityList,
         )
 
     async def get(
         self,
-        memory_uuid: str,
+        entity_uuid: str,
         *,
         space_uuid: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -295,9 +227,9 @@ class AsyncMemoriesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Memory:
+    ) -> EntityDetail:
         """
-        Get a memory by UUID.
+        Get Entity
 
         Args:
           extra_headers: Send extra headers
@@ -308,76 +240,64 @@ class AsyncMemoriesResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        if not memory_uuid:
-            raise ValueError(f"Expected a non-empty value for `memory_uuid` but received {memory_uuid!r}")
+        if not entity_uuid:
+            raise ValueError(f"Expected a non-empty value for `entity_uuid` but received {entity_uuid!r}")
         return await self._get(
-            path_template("/api/v1/memories/{memory_uuid}", memory_uuid=memory_uuid),
+            path_template("/api/v1/entities/{entity_uuid}", entity_uuid=entity_uuid),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform({"space_uuid": space_uuid}, memory_get_params.MemoryGetParams),
+                query=await async_maybe_transform({"space_uuid": space_uuid}, entity_get_params.EntityGetParams),
             ),
-            cast_to=Memory,
+            cast_to=EntityDetail,
         )
 
 
-class MemoriesResourceWithRawResponse:
-    def __init__(self, memories: MemoriesResource) -> None:
-        self._memories = memories
+class EntitiesResourceWithRawResponse:
+    def __init__(self, entities: EntitiesResource) -> None:
+        self._entities = entities
 
         self.list = to_raw_response_wrapper(
-            memories.list,
-        )
-        self.delete = to_raw_response_wrapper(
-            memories.delete,
+            entities.list,
         )
         self.get = to_raw_response_wrapper(
-            memories.get,
+            entities.get,
         )
 
 
-class AsyncMemoriesResourceWithRawResponse:
-    def __init__(self, memories: AsyncMemoriesResource) -> None:
-        self._memories = memories
+class AsyncEntitiesResourceWithRawResponse:
+    def __init__(self, entities: AsyncEntitiesResource) -> None:
+        self._entities = entities
 
         self.list = async_to_raw_response_wrapper(
-            memories.list,
-        )
-        self.delete = async_to_raw_response_wrapper(
-            memories.delete,
+            entities.list,
         )
         self.get = async_to_raw_response_wrapper(
-            memories.get,
+            entities.get,
         )
 
 
-class MemoriesResourceWithStreamingResponse:
-    def __init__(self, memories: MemoriesResource) -> None:
-        self._memories = memories
+class EntitiesResourceWithStreamingResponse:
+    def __init__(self, entities: EntitiesResource) -> None:
+        self._entities = entities
 
         self.list = to_streamed_response_wrapper(
-            memories.list,
-        )
-        self.delete = to_streamed_response_wrapper(
-            memories.delete,
+            entities.list,
         )
         self.get = to_streamed_response_wrapper(
-            memories.get,
+            entities.get,
         )
 
 
-class AsyncMemoriesResourceWithStreamingResponse:
-    def __init__(self, memories: AsyncMemoriesResource) -> None:
-        self._memories = memories
+class AsyncEntitiesResourceWithStreamingResponse:
+    def __init__(self, entities: AsyncEntitiesResource) -> None:
+        self._entities = entities
 
         self.list = async_to_streamed_response_wrapper(
-            memories.list,
-        )
-        self.delete = async_to_streamed_response_wrapper(
-            memories.delete,
+            entities.list,
         )
         self.get = async_to_streamed_response_wrapper(
-            memories.get,
+            entities.get,
         )

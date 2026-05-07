@@ -5,10 +5,10 @@ from datetime import datetime
 
 from .._models import BaseModel
 
-__all__ = ["JobGetStatusResponse"]
+__all__ = ["Job"]
 
 
-class JobGetStatusResponse(BaseModel):
+class Job(BaseModel):
     created_at: datetime
 
     job_id: str
