@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Union, Optional
+from typing import Union
 from datetime import date
 
 import httpx
@@ -18,8 +18,8 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..types.usage import Usage
 from .._base_client import make_request_options
-from ..types.usage_get_response import UsageGetResponse
 
 __all__ = ["UsageResource", "AsyncUsageResource"]
 
@@ -31,7 +31,7 @@ class UsageResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/crosmos-app/crosmos-python-sdk#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#accessing-raw-response-data-eg-headers
         """
         return UsageResourceWithRawResponse(self)
 
@@ -40,7 +40,7 @@ class UsageResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/crosmos-app/crosmos-python-sdk#with_streaming_response
+        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#with_streaming_response
         """
         return UsageResourceWithStreamingResponse(self)
 
@@ -48,7 +48,6 @@ class UsageResource(SyncAPIResource):
         self,
         *,
         end_date: Union[str, date, None] | Omit = omit,
-        space_id: Optional[int] | Omit = omit,
         start_date: Union[str, date, None] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -56,14 +55,12 @@ class UsageResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> UsageGetResponse:
+    ) -> Usage:
         """
-        Return aggregated usage for the authenticated user.
+        Return org-level usage for the active billing period and plan limits.
 
         Args:
           end_date: End date (defaults to today)
-
-          space_id: Filter by memory space
 
           start_date: Start date (defaults to 1st of current month)
 
@@ -85,13 +82,12 @@ class UsageResource(SyncAPIResource):
                 query=maybe_transform(
                     {
                         "end_date": end_date,
-                        "space_id": space_id,
                         "start_date": start_date,
                     },
                     usage_get_params.UsageGetParams,
                 ),
             ),
-            cast_to=UsageGetResponse,
+            cast_to=Usage,
         )
 
 
@@ -102,7 +98,7 @@ class AsyncUsageResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/crosmos-app/crosmos-python-sdk#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#accessing-raw-response-data-eg-headers
         """
         return AsyncUsageResourceWithRawResponse(self)
 
@@ -111,7 +107,7 @@ class AsyncUsageResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/crosmos-app/crosmos-python-sdk#with_streaming_response
+        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#with_streaming_response
         """
         return AsyncUsageResourceWithStreamingResponse(self)
 
@@ -119,7 +115,6 @@ class AsyncUsageResource(AsyncAPIResource):
         self,
         *,
         end_date: Union[str, date, None] | Omit = omit,
-        space_id: Optional[int] | Omit = omit,
         start_date: Union[str, date, None] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -127,14 +122,12 @@ class AsyncUsageResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> UsageGetResponse:
+    ) -> Usage:
         """
-        Return aggregated usage for the authenticated user.
+        Return org-level usage for the active billing period and plan limits.
 
         Args:
           end_date: End date (defaults to today)
-
-          space_id: Filter by memory space
 
           start_date: Start date (defaults to 1st of current month)
 
@@ -156,13 +149,12 @@ class AsyncUsageResource(AsyncAPIResource):
                 query=await async_maybe_transform(
                     {
                         "end_date": end_date,
-                        "space_id": space_id,
                         "start_date": start_date,
                     },
                     usage_get_params.UsageGetParams,
                 ),
             ),
-            cast_to=UsageGetResponse,
+            cast_to=Usage,
         )
 
 

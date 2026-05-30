@@ -4,12 +4,12 @@ from typing import List, Optional
 
 from .._models import BaseModel
 
-__all__ = ["SourceIngestResponse"]
+__all__ = ["IngestConversation"]
 
 
-class SourceIngestResponse(BaseModel):
+class IngestConversation(BaseModel):
     job_id: str
 
-    source_ids: List[int]
+    source_ids: List[str]
 
     status: Optional[str] = None

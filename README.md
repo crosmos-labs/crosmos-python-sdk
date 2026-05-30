@@ -9,6 +9,15 @@ and offers both synchronous and asynchronous clients powered by [httpx](https://
 
 It is generated with [Stainless](https://www.stainless.com/).
 
+## MCP Server
+
+Use the Crosmos MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=crosmos-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImNyb3Ntb3MtbWNwIl0sImVudiI6eyJDUk9TTU9TX0FQSV9LRVkiOiJNeSBBUEkgS2V5In19)
+[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22crosmos-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22crosmos-mcp%22%5D%2C%22env%22%3A%7B%22CROSMOS_API_KEY%22%3A%22My%20API%20Key%22%7D%7D)
+
+> Note: You may need to set environment variables in your MCP client.
+
 ## Documentation
 
 The REST API documentation can be found on [docs.crosmos.dev](https://docs.crosmos.dev). The full API of this library can be found in [api.md](api.md).
@@ -34,7 +43,7 @@ client = Crosmos(
 
 search = client.search.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 )
 print(search.candidates)
 ```
@@ -61,7 +70,7 @@ client = AsyncCrosmos(
 async def main() -> None:
     search = await client.search.hybrid(
         query="What is my primary language?",
-        space_id=0,
+        space_id="<your-space-uuid>",
     )
     print(search.candidates)
 
@@ -98,7 +107,7 @@ async def main() -> None:
     ) as client:
         search = await client.search.hybrid(
             query="What is my primary language?",
-            space_id=0,
+            space_id="<your-space-uuid>",
         )
         print(search.candidates)
 
@@ -114,29 +123,6 @@ Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typ
 - Converting to a dictionary, `model.to_dict()`
 
 Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
-
-## Nested params
-
-Nested parameters are dictionaries, typed using `TypedDict`, for example:
-
-```python
-from crosmos import Crosmos
-
-client = Crosmos()
-
-response = client.sources.ingest(
-    space_id=0,
-    messages={
-        "messages": [
-            {
-                "content": "x",
-                "role": "x",
-            }
-        ]
-    },
-)
-print(response.messages)
-```
 
 ## Handling errors
 
@@ -156,7 +142,7 @@ client = Crosmos()
 try:
     client.search.hybrid(
         query="What is my primary language?",
-        space_id=0,
+        space_id="<your-space-uuid>",
     )
 except crosmos.APIConnectionError as e:
     print("The server could not be reached")
@@ -202,7 +188,7 @@ client = Crosmos(
 # Or, configure per-request:
 client.with_options(max_retries=5).search.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 )
 ```
 
@@ -228,7 +214,7 @@ client = Crosmos(
 # Override per-request:
 client.with_options(timeout=5.0).search.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 )
 ```
 
@@ -272,7 +258,7 @@ from crosmos import Crosmos
 client = Crosmos()
 response = client.search.with_raw_response.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 )
 print(response.headers.get('X-My-Header'))
 
@@ -280,9 +266,9 @@ search = response.parse()  # get the object that `search.hybrid()` would have re
 print(search.candidates)
 ```
 
-These methods return an [`APIResponse`](https://github.com/crosmos-app/crosmos-python-sdk/tree/main/src/crosmos/_response.py) object.
+These methods return an [`APIResponse`](https://github.com/crosmos-labs/crosmos-python-sdk/tree/main/src/crosmos/_response.py) object.
 
-The async client returns an [`AsyncAPIResponse`](https://github.com/crosmos-app/crosmos-python-sdk/tree/main/src/crosmos/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+The async client returns an [`AsyncAPIResponse`](https://github.com/crosmos-labs/crosmos-python-sdk/tree/main/src/crosmos/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
 
 #### `.with_streaming_response`
 
@@ -293,7 +279,7 @@ To stream the response body, use `.with_streaming_response` instead, which requi
 ```python
 with client.search.with_streaming_response.hybrid(
     query="What is my primary language?",
-    space_id=0,
+    space_id="<your-space-uuid>",
 ) as response:
     print(response.headers.get("X-My-Header"))
 
@@ -389,7 +375,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/crosmos-app/crosmos-python-sdk/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/crosmos-labs/crosmos-python-sdk/issues) with questions, bugs, or suggestions.
 
 ### Determining the installed version
 

@@ -2,13 +2,13 @@
 
 from typing import List
 
-from .source import Source
+from .entity import Entity
 from .._models import BaseModel
 
-__all__ = ["SourceListResponse"]
+__all__ = ["EntityList"]
 
 
-class SourceListResponse(BaseModel):
-    count: int
+class EntityList(BaseModel):
+    entities: List[Entity]
 
-    sources: List[Source]
+    total: int

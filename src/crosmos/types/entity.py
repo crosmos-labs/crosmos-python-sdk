@@ -5,26 +5,21 @@ from datetime import datetime
 
 from .._models import BaseModel
 
-__all__ = ["Source"]
+__all__ = ["Entity"]
 
 
-class Source(BaseModel):
+class Entity(BaseModel):
     id: str
-
-    content: str
-
-    content_type: str
 
     created_at: datetime
 
-    extraction_status: str
+    edge_count: int
+    """Total incoming + outgoing edges"""
 
-    sequence: int
+    entity_type: Optional[str] = None
+
+    name: str
 
     space_id: str
 
-    token_count: int
-
     updated_at: datetime
-
-    meta: Optional[object] = None

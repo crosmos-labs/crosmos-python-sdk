@@ -9,7 +9,7 @@ import pytest
 
 from crosmos import Crosmos, AsyncCrosmos
 from tests.utils import assert_matches_type
-from crosmos.types import Space, SpaceListResponse
+from crosmos.types import Space, SpaceList
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -65,7 +65,15 @@ class TestSpaces:
     @parametrize
     def test_method_list(self, client: Crosmos) -> None:
         space = client.spaces.list()
-        assert_matches_type(SpaceListResponse, space, path=["response"])
+        assert_matches_type(SpaceList, space, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_list_with_all_params(self, client: Crosmos) -> None:
+        space = client.spaces.list(
+            name="name",
+        )
+        assert_matches_type(SpaceList, space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -75,7 +83,7 @@ class TestSpaces:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         space = response.parse()
-        assert_matches_type(SpaceListResponse, space, path=["response"])
+        assert_matches_type(SpaceList, space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -85,7 +93,7 @@ class TestSpaces:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             space = response.parse()
-            assert_matches_type(SpaceListResponse, space, path=["response"])
+            assert_matches_type(SpaceList, space, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -93,7 +101,7 @@ class TestSpaces:
     @parametrize
     def test_method_delete(self, client: Crosmos) -> None:
         space = client.spaces.delete(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert space is None
 
@@ -101,7 +109,7 @@ class TestSpaces:
     @parametrize
     def test_raw_response_delete(self, client: Crosmos) -> None:
         response = client.spaces.with_raw_response.delete(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -113,7 +121,7 @@ class TestSpaces:
     @parametrize
     def test_streaming_response_delete(self, client: Crosmos) -> None:
         with client.spaces.with_streaming_response.delete(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -125,9 +133,17 @@ class TestSpaces:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    def test_path_params_delete(self, client: Crosmos) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `space_uuid` but received ''"):
+            client.spaces.with_raw_response.delete(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     def test_method_get(self, client: Crosmos) -> None:
         space = client.spaces.get(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(Space, space, path=["response"])
 
@@ -135,7 +151,7 @@ class TestSpaces:
     @parametrize
     def test_raw_response_get(self, client: Crosmos) -> None:
         response = client.spaces.with_raw_response.get(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -147,7 +163,7 @@ class TestSpaces:
     @parametrize
     def test_streaming_response_get(self, client: Crosmos) -> None:
         with client.spaces.with_streaming_response.get(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -156,6 +172,14 @@ class TestSpaces:
             assert_matches_type(Space, space, path=["response"])
 
         assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_path_params_get(self, client: Crosmos) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `space_uuid` but received ''"):
+            client.spaces.with_raw_response.get(
+                "",
+            )
 
 
 class TestAsyncSpaces:
@@ -211,7 +235,15 @@ class TestAsyncSpaces:
     @parametrize
     async def test_method_list(self, async_client: AsyncCrosmos) -> None:
         space = await async_client.spaces.list()
-        assert_matches_type(SpaceListResponse, space, path=["response"])
+        assert_matches_type(SpaceList, space, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_list_with_all_params(self, async_client: AsyncCrosmos) -> None:
+        space = await async_client.spaces.list(
+            name="name",
+        )
+        assert_matches_type(SpaceList, space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -221,7 +253,7 @@ class TestAsyncSpaces:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         space = await response.parse()
-        assert_matches_type(SpaceListResponse, space, path=["response"])
+        assert_matches_type(SpaceList, space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -231,7 +263,7 @@ class TestAsyncSpaces:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             space = await response.parse()
-            assert_matches_type(SpaceListResponse, space, path=["response"])
+            assert_matches_type(SpaceList, space, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -239,7 +271,7 @@ class TestAsyncSpaces:
     @parametrize
     async def test_method_delete(self, async_client: AsyncCrosmos) -> None:
         space = await async_client.spaces.delete(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert space is None
 
@@ -247,7 +279,7 @@ class TestAsyncSpaces:
     @parametrize
     async def test_raw_response_delete(self, async_client: AsyncCrosmos) -> None:
         response = await async_client.spaces.with_raw_response.delete(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -259,7 +291,7 @@ class TestAsyncSpaces:
     @parametrize
     async def test_streaming_response_delete(self, async_client: AsyncCrosmos) -> None:
         async with async_client.spaces.with_streaming_response.delete(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -271,9 +303,17 @@ class TestAsyncSpaces:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    async def test_path_params_delete(self, async_client: AsyncCrosmos) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `space_uuid` but received ''"):
+            await async_client.spaces.with_raw_response.delete(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     async def test_method_get(self, async_client: AsyncCrosmos) -> None:
         space = await async_client.spaces.get(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(Space, space, path=["response"])
 
@@ -281,7 +321,7 @@ class TestAsyncSpaces:
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncCrosmos) -> None:
         response = await async_client.spaces.with_raw_response.get(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -293,7 +333,7 @@ class TestAsyncSpaces:
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncCrosmos) -> None:
         async with async_client.spaces.with_streaming_response.get(
-            0,
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -302,3 +342,11 @@ class TestAsyncSpaces:
             assert_matches_type(Space, space, path=["response"])
 
         assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_path_params_get(self, async_client: AsyncCrosmos) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `space_uuid` but received ''"):
+            await async_client.spaces.with_raw_response.get(
+                "",
+            )

@@ -14,8 +14,8 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..types.job import Job
 from .._base_client import make_request_options
-from ..types.job_get_status_response import JobGetStatusResponse
 
 __all__ = ["JobsResource", "AsyncJobsResource"]
 
@@ -27,7 +27,7 @@ class JobsResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/crosmos-app/crosmos-python-sdk#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#accessing-raw-response-data-eg-headers
         """
         return JobsResourceWithRawResponse(self)
 
@@ -36,7 +36,7 @@ class JobsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/crosmos-app/crosmos-python-sdk#with_streaming_response
+        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#with_streaming_response
         """
         return JobsResourceWithStreamingResponse(self)
 
@@ -50,7 +50,7 @@ class JobsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> JobGetStatusResponse:
+    ) -> Job:
         """
         Poll for ingestion job status.
 
@@ -70,7 +70,7 @@ class JobsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=JobGetStatusResponse,
+            cast_to=Job,
         )
 
 
@@ -81,7 +81,7 @@ class AsyncJobsResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/crosmos-app/crosmos-python-sdk#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#accessing-raw-response-data-eg-headers
         """
         return AsyncJobsResourceWithRawResponse(self)
 
@@ -90,7 +90,7 @@ class AsyncJobsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/crosmos-app/crosmos-python-sdk#with_streaming_response
+        For more information, see https://www.github.com/crosmos-labs/crosmos-python-sdk#with_streaming_response
         """
         return AsyncJobsResourceWithStreamingResponse(self)
 
@@ -104,7 +104,7 @@ class AsyncJobsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> JobGetStatusResponse:
+    ) -> Job:
         """
         Poll for ingestion job status.
 
@@ -124,7 +124,7 @@ class AsyncJobsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=JobGetStatusResponse,
+            cast_to=Job,
         )
 
 
