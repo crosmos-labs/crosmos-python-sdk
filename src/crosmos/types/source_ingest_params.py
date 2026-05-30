@@ -28,6 +28,3 @@ class Source(TypedDict, total=False):
 
     role: Optional[str]
     """Optional speaker role (e.g. 'user', 'assistant')"""
-
-    sequence: int
-    """Order within the batch (0-indexed)"""
