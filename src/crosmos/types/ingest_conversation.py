@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import Optional
 
 from .._models import BaseModel
 
@@ -10,6 +10,6 @@ __all__ = ["IngestConversation"]
 class IngestConversation(BaseModel):
     job_id: str
 
-    source_ids: List[str]
+    source_id: str
 
     status: Optional[str] = None

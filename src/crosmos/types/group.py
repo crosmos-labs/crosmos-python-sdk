@@ -1,28 +1,21 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import Optional
 from datetime import datetime
 
 from .._models import BaseModel
 
-__all__ = ["Source"]
+__all__ = ["Group"]
 
 
-class Source(BaseModel):
+class Group(BaseModel):
     id: str
-
-    content: str
-
-    content_type: str
 
     created_at: datetime
 
-    extraction_status: str
+    member_count: int
 
-    space_id: str
+    name: str
 
-    token_count: int
+    slug: str
 
     updated_at: datetime
-
-    meta: Optional[object] = None

@@ -13,6 +13,7 @@ from crosmos.types import (
     Source,
     SourceList,
     IngestAccepted,
+    SourceVisibility,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -190,6 +191,26 @@ class TestSources:
 
         assert cast(Any, response.is_closed) is True
 
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_update_visibility(self, client: Crosmos) -> None:
+        source = client.sources.update_visibility(
+            source_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            visibility="private",
+        )
+        assert_matches_type(SourceVisibility, source, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_path_params_update_visibility(self, client: Crosmos) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `source_uuid` but received ''"):
+            client.sources.with_raw_response.update_visibility(
+                source_uuid="",
+                space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                visibility="private",
+            )
+
 
 class TestAsyncSources:
     parametrize = pytest.mark.parametrize(
@@ -364,3 +385,23 @@ class TestAsyncSources:
             assert_matches_type(IngestAccepted, source, path=["response"])
 
         assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_update_visibility(self, async_client: AsyncCrosmos) -> None:
+        source = await async_client.sources.update_visibility(
+            source_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            visibility="private",
+        )
+        assert_matches_type(SourceVisibility, source, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_path_params_update_visibility(self, async_client: AsyncCrosmos) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `source_uuid` but received ''"):
+            await async_client.sources.with_raw_response.update_visibility(
+                source_uuid="",
+                space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                visibility="private",
+            )

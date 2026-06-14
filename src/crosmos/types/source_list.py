@@ -18,8 +18,6 @@ class SourcesUnionMember0(BaseModel):
 
     extraction_status: str
 
-    sequence: int
-
     space_id: str
 
     token_count: int
