@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import Dict, Iterable, Optional
-from typing_extensions import Required, TypedDict
+from typing_extensions import Literal, Required, TypedDict
 
 __all__ = ["ConversationIngestParams", "Message"]
 
@@ -23,6 +23,10 @@ class ConversationIngestParams(TypedDict, total=False):
 
     session_id: Optional[str]
     """Session identifier. Auto-generated if not provided."""
+
+    visibility: Literal["private", "org"]
+    """Read scope: 'private' (gated by the visibility graph) or 'org' (readable by
+    everyone in the org)"""
 
 
 class Message(TypedDict, total=False):

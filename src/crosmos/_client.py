@@ -36,8 +36,21 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import jobs, usage, health, search, spaces, sources, entities, memories, conversations
+    from .resources import (
+        jobs,
+        orgs,
+        usage,
+        health,
+        search,
+        spaces,
+        sources,
+        entities,
+        memories,
+        visibility,
+        conversations,
+    )
     from .resources.jobs import JobsResource, AsyncJobsResource
+    from .resources.orgs import OrgsResource, AsyncOrgsResource
     from .resources.usage import UsageResource, AsyncUsageResource
     from .resources.health import HealthResource, AsyncHealthResource
     from .resources.search import SearchResource, AsyncSearchResource
@@ -45,6 +58,7 @@ if TYPE_CHECKING:
     from .resources.sources import SourcesResource, AsyncSourcesResource
     from .resources.entities import EntitiesResource, AsyncEntitiesResource
     from .resources.memories import MemoriesResource, AsyncMemoriesResource
+    from .resources.visibility import VisibilityResource, AsyncVisibilityResource
     from .resources.conversations import ConversationsResource, AsyncConversationsResource
 
 __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Crosmos", "AsyncCrosmos", "Client", "AsyncClient"]
@@ -149,6 +163,18 @@ class Crosmos(SyncAPIClient):
         from .resources.conversations import ConversationsResource
 
         return ConversationsResource(self)
+
+    @cached_property
+    def orgs(self) -> OrgsResource:
+        from .resources.orgs import OrgsResource
+
+        return OrgsResource(self)
+
+    @cached_property
+    def visibility(self) -> VisibilityResource:
+        from .resources.visibility import VisibilityResource
+
+        return VisibilityResource(self)
 
     @cached_property
     def jobs(self) -> JobsResource:
@@ -387,6 +413,18 @@ class AsyncCrosmos(AsyncAPIClient):
         return AsyncConversationsResource(self)
 
     @cached_property
+    def orgs(self) -> AsyncOrgsResource:
+        from .resources.orgs import AsyncOrgsResource
+
+        return AsyncOrgsResource(self)
+
+    @cached_property
+    def visibility(self) -> AsyncVisibilityResource:
+        from .resources.visibility import AsyncVisibilityResource
+
+        return AsyncVisibilityResource(self)
+
+    @cached_property
     def jobs(self) -> AsyncJobsResource:
         from .resources.jobs import AsyncJobsResource
 
@@ -565,6 +603,18 @@ class CrosmosWithRawResponse:
         return ConversationsResourceWithRawResponse(self._client.conversations)
 
     @cached_property
+    def orgs(self) -> orgs.OrgsResourceWithRawResponse:
+        from .resources.orgs import OrgsResourceWithRawResponse
+
+        return OrgsResourceWithRawResponse(self._client.orgs)
+
+    @cached_property
+    def visibility(self) -> visibility.VisibilityResourceWithRawResponse:
+        from .resources.visibility import VisibilityResourceWithRawResponse
+
+        return VisibilityResourceWithRawResponse(self._client.visibility)
+
+    @cached_property
     def jobs(self) -> jobs.JobsResourceWithRawResponse:
         from .resources.jobs import JobsResourceWithRawResponse
 
@@ -624,6 +674,18 @@ class AsyncCrosmosWithRawResponse:
         from .resources.conversations import AsyncConversationsResourceWithRawResponse
 
         return AsyncConversationsResourceWithRawResponse(self._client.conversations)
+
+    @cached_property
+    def orgs(self) -> orgs.AsyncOrgsResourceWithRawResponse:
+        from .resources.orgs import AsyncOrgsResourceWithRawResponse
+
+        return AsyncOrgsResourceWithRawResponse(self._client.orgs)
+
+    @cached_property
+    def visibility(self) -> visibility.AsyncVisibilityResourceWithRawResponse:
+        from .resources.visibility import AsyncVisibilityResourceWithRawResponse
+
+        return AsyncVisibilityResourceWithRawResponse(self._client.visibility)
 
     @cached_property
     def jobs(self) -> jobs.AsyncJobsResourceWithRawResponse:
@@ -687,6 +749,18 @@ class CrosmosWithStreamedResponse:
         return ConversationsResourceWithStreamingResponse(self._client.conversations)
 
     @cached_property
+    def orgs(self) -> orgs.OrgsResourceWithStreamingResponse:
+        from .resources.orgs import OrgsResourceWithStreamingResponse
+
+        return OrgsResourceWithStreamingResponse(self._client.orgs)
+
+    @cached_property
+    def visibility(self) -> visibility.VisibilityResourceWithStreamingResponse:
+        from .resources.visibility import VisibilityResourceWithStreamingResponse
+
+        return VisibilityResourceWithStreamingResponse(self._client.visibility)
+
+    @cached_property
     def jobs(self) -> jobs.JobsResourceWithStreamingResponse:
         from .resources.jobs import JobsResourceWithStreamingResponse
 
@@ -746,6 +820,18 @@ class AsyncCrosmosWithStreamedResponse:
         from .resources.conversations import AsyncConversationsResourceWithStreamingResponse
 
         return AsyncConversationsResourceWithStreamingResponse(self._client.conversations)
+
+    @cached_property
+    def orgs(self) -> orgs.AsyncOrgsResourceWithStreamingResponse:
+        from .resources.orgs import AsyncOrgsResourceWithStreamingResponse
+
+        return AsyncOrgsResourceWithStreamingResponse(self._client.orgs)
+
+    @cached_property
+    def visibility(self) -> visibility.AsyncVisibilityResourceWithStreamingResponse:
+        from .resources.visibility import AsyncVisibilityResourceWithStreamingResponse
+
+        return AsyncVisibilityResourceWithStreamingResponse(self._client.visibility)
 
     @cached_property
     def jobs(self) -> jobs.AsyncJobsResourceWithStreamingResponse:

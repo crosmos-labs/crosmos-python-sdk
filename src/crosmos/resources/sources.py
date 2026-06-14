@@ -3,10 +3,17 @@
 from __future__ import annotations
 
 from typing import Iterable, Optional
+from typing_extensions import Literal
 
 import httpx
 
-from ..types import source_get_params, source_list_params, source_delete_params, source_ingest_params
+from ..types import (
+    source_get_params,
+    source_list_params,
+    source_delete_params,
+    source_ingest_params,
+    source_update_visibility_params,
+)
 from .._types import Body, Omit, Query, Headers, NoneType, NotGiven, omit, not_given
 from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
@@ -21,6 +28,7 @@ from .._base_client import make_request_options
 from ..types.source import Source
 from ..types.source_list import SourceList
 from ..types.ingest_accepted import IngestAccepted
+from ..types.source_visibility import SourceVisibility
 
 __all__ = ["SourcesResource", "AsyncSourcesResource"]
 
@@ -219,6 +227,54 @@ class SourcesResource(SyncAPIResource):
             cast_to=IngestAccepted,
         )
 
+    def update_visibility(
+        self,
+        source_uuid: str,
+        *,
+        space_uuid: str,
+        visibility: Literal["private", "org"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SourceVisibility:
+        """Update the read scope of a source and re-classify its derived memories and
+        edges.
+
+        Setting `visibility` to `private` un-publishes org-shared content.
+
+        Args:
+          visibility: New read scope. 'private' un-publishes org-shared content.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not source_uuid:
+            raise ValueError(f"Expected a non-empty value for `source_uuid` but received {source_uuid!r}")
+        return self._patch(
+            path_template("/api/v1/sources/{source_uuid}/visibility", source_uuid=source_uuid),
+            body=maybe_transform(
+                {"visibility": visibility}, source_update_visibility_params.SourceUpdateVisibilityParams
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {"space_uuid": space_uuid}, source_update_visibility_params.SourceUpdateVisibilityParams
+                ),
+            ),
+            cast_to=SourceVisibility,
+        )
+
 
 class AsyncSourcesResource(AsyncAPIResource):
     @cached_property
@@ -414,6 +470,54 @@ class AsyncSourcesResource(AsyncAPIResource):
             cast_to=IngestAccepted,
         )
 
+    async def update_visibility(
+        self,
+        source_uuid: str,
+        *,
+        space_uuid: str,
+        visibility: Literal["private", "org"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SourceVisibility:
+        """Update the read scope of a source and re-classify its derived memories and
+        edges.
+
+        Setting `visibility` to `private` un-publishes org-shared content.
+
+        Args:
+          visibility: New read scope. 'private' un-publishes org-shared content.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not source_uuid:
+            raise ValueError(f"Expected a non-empty value for `source_uuid` but received {source_uuid!r}")
+        return await self._patch(
+            path_template("/api/v1/sources/{source_uuid}/visibility", source_uuid=source_uuid),
+            body=await async_maybe_transform(
+                {"visibility": visibility}, source_update_visibility_params.SourceUpdateVisibilityParams
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"space_uuid": space_uuid}, source_update_visibility_params.SourceUpdateVisibilityParams
+                ),
+            ),
+            cast_to=SourceVisibility,
+        )
+
 
 class SourcesResourceWithRawResponse:
     def __init__(self, sources: SourcesResource) -> None:
@@ -430,6 +534,9 @@ class SourcesResourceWithRawResponse:
         )
         self.ingest = to_raw_response_wrapper(
             sources.ingest,
+        )
+        self.update_visibility = to_raw_response_wrapper(
+            sources.update_visibility,
         )
 
 
@@ -449,6 +556,9 @@ class AsyncSourcesResourceWithRawResponse:
         self.ingest = async_to_raw_response_wrapper(
             sources.ingest,
         )
+        self.update_visibility = async_to_raw_response_wrapper(
+            sources.update_visibility,
+        )
 
 
 class SourcesResourceWithStreamingResponse:
@@ -467,6 +577,9 @@ class SourcesResourceWithStreamingResponse:
         self.ingest = to_streamed_response_wrapper(
             sources.ingest,
         )
+        self.update_visibility = to_streamed_response_wrapper(
+            sources.update_visibility,
+        )
 
 
 class AsyncSourcesResourceWithStreamingResponse:
@@ -484,4 +597,7 @@ class AsyncSourcesResourceWithStreamingResponse:
         )
         self.ingest = async_to_streamed_response_wrapper(
             sources.ingest,
+        )
+        self.update_visibility = async_to_streamed_response_wrapper(
+            sources.update_visibility,
         )

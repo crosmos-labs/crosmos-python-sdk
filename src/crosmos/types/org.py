@@ -5,24 +5,20 @@ from datetime import datetime
 
 from .._models import BaseModel
 
-__all__ = ["Source"]
+__all__ = ["Org"]
 
 
-class Source(BaseModel):
+class Org(BaseModel):
     id: str
 
-    content: str
-
-    content_type: str
+    billing_email: Optional[str] = None
 
     created_at: datetime
 
-    extraction_status: str
+    name: str
 
-    space_id: str
+    plan: str
 
-    token_count: int
+    slug: str
 
     updated_at: datetime
-
-    meta: Optional[object] = None

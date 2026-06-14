@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import Dict, Iterable, Optional
-from typing_extensions import Required, TypedDict
+from typing_extensions import Literal, Required, TypedDict
 
 __all__ = ["SourceIngestParams", "Source"]
 
@@ -29,5 +29,6 @@ class Source(TypedDict, total=False):
     role: Optional[str]
     """Optional speaker role (e.g. 'user', 'assistant')"""
 
-    sequence: int
-    """Order within the batch (0-indexed)"""
+    visibility: Literal["private", "org"]
+    """Read scope: 'private' (gated by the visibility graph) or 'org' (readable by
+    everyone in the org)"""

@@ -8,6 +8,14 @@ from .jobs import (
     JobsResourceWithStreamingResponse,
     AsyncJobsResourceWithStreamingResponse,
 )
+from .orgs import (
+    OrgsResource,
+    AsyncOrgsResource,
+    OrgsResourceWithRawResponse,
+    AsyncOrgsResourceWithRawResponse,
+    OrgsResourceWithStreamingResponse,
+    AsyncOrgsResourceWithStreamingResponse,
+)
 from .usage import (
     UsageResource,
     AsyncUsageResource,
@@ -64,6 +72,14 @@ from .memories import (
     MemoriesResourceWithStreamingResponse,
     AsyncMemoriesResourceWithStreamingResponse,
 )
+from .visibility import (
+    VisibilityResource,
+    AsyncVisibilityResource,
+    VisibilityResourceWithRawResponse,
+    AsyncVisibilityResourceWithRawResponse,
+    VisibilityResourceWithStreamingResponse,
+    AsyncVisibilityResourceWithStreamingResponse,
+)
 from .conversations import (
     ConversationsResource,
     AsyncConversationsResource,
@@ -86,12 +102,24 @@ __all__ = [
     "AsyncSearchResourceWithRawResponse",
     "SearchResourceWithStreamingResponse",
     "AsyncSearchResourceWithStreamingResponse",
+    "OrgsResource",
+    "AsyncOrgsResource",
+    "OrgsResourceWithRawResponse",
+    "AsyncOrgsResourceWithRawResponse",
+    "OrgsResourceWithStreamingResponse",
+    "AsyncOrgsResourceWithStreamingResponse",
     "SourcesResource",
     "AsyncSourcesResource",
     "SourcesResourceWithRawResponse",
     "AsyncSourcesResourceWithRawResponse",
     "SourcesResourceWithStreamingResponse",
     "AsyncSourcesResourceWithStreamingResponse",
+    "VisibilityResource",
+    "AsyncVisibilityResource",
+    "VisibilityResourceWithRawResponse",
+    "AsyncVisibilityResourceWithRawResponse",
+    "VisibilityResourceWithStreamingResponse",
+    "AsyncVisibilityResourceWithStreamingResponse",
     "MemoriesResource",
     "AsyncMemoriesResource",
     "MemoriesResourceWithRawResponse",
