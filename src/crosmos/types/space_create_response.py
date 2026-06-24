@@ -5,17 +5,17 @@ from datetime import datetime
 
 from .._models import BaseModel
 
-__all__ = ["Space"]
+__all__ = ["SpaceCreateResponse"]
 
 
-class Space(BaseModel):
+class SpaceCreateResponse(BaseModel):
     id: str
 
     created_at: datetime
 
     description: Optional[str] = None
 
-    meta: Optional[Dict[str, object]] = None
+    meta: Optional[Dict[str, Optional[object]]] = None
 
     name: str
 

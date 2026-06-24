@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from typing_extensions import Required, TypedDict
+from typing_extensions import TypedDict
 
 __all__ = ["MemoryDeleteParams"]
 
 
 class MemoryDeleteParams(TypedDict, total=False):
-    space_uuid: Required[str]
+    space_id: str
+
+    space_uuid: str

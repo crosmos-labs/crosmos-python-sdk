@@ -20,30 +20,27 @@ class TestMemories:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: Crosmos) -> None:
-        memory = client.memories.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
+        memory = client.memories.list()
         assert_matches_type(MemoryList, memory, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_with_all_params(self, client: Crosmos) -> None:
         memory = client.memories.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             limit=1,
             memory_type="viewpoint",
             offset=0,
             order="asc",
             sort_by="created_at",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(MemoryList, memory, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: Crosmos) -> None:
-        response = client.memories.with_raw_response.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
+        response = client.memories.with_raw_response.list()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -53,9 +50,7 @@ class TestMemories:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: Crosmos) -> None:
-        with client.memories.with_streaming_response.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        ) as response:
+        with client.memories.with_streaming_response.list() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -69,6 +64,15 @@ class TestMemories:
     def test_method_delete(self, client: Crosmos) -> None:
         memory = client.memories.delete(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert memory is None
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_delete_with_all_params(self, client: Crosmos) -> None:
+        memory = client.memories.delete(
+            memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert memory is None
@@ -78,7 +82,6 @@ class TestMemories:
     def test_raw_response_delete(self, client: Crosmos) -> None:
         response = client.memories.with_raw_response.delete(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -91,7 +94,6 @@ class TestMemories:
     def test_streaming_response_delete(self, client: Crosmos) -> None:
         with client.memories.with_streaming_response.delete(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -107,7 +109,6 @@ class TestMemories:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `memory_uuid` but received ''"):
             client.memories.with_raw_response.delete(
                 memory_uuid="",
-                space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -115,6 +116,15 @@ class TestMemories:
     def test_method_get(self, client: Crosmos) -> None:
         memory = client.memories.get(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(Memory, memory, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_get_with_all_params(self, client: Crosmos) -> None:
+        memory = client.memories.get(
+            memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(Memory, memory, path=["response"])
@@ -124,7 +134,6 @@ class TestMemories:
     def test_raw_response_get(self, client: Crosmos) -> None:
         response = client.memories.with_raw_response.get(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -137,7 +146,6 @@ class TestMemories:
     def test_streaming_response_get(self, client: Crosmos) -> None:
         with client.memories.with_streaming_response.get(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -153,7 +161,6 @@ class TestMemories:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `memory_uuid` but received ''"):
             client.memories.with_raw_response.get(
                 memory_uuid="",
-                space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             )
 
 
@@ -165,30 +172,27 @@ class TestAsyncMemories:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncCrosmos) -> None:
-        memory = await async_client.memories.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
+        memory = await async_client.memories.list()
         assert_matches_type(MemoryList, memory, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncCrosmos) -> None:
         memory = await async_client.memories.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             limit=1,
             memory_type="viewpoint",
             offset=0,
             order="asc",
             sort_by="created_at",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(MemoryList, memory, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncCrosmos) -> None:
-        response = await async_client.memories.with_raw_response.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
+        response = await async_client.memories.with_raw_response.list()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -198,9 +202,7 @@ class TestAsyncMemories:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncCrosmos) -> None:
-        async with async_client.memories.with_streaming_response.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        ) as response:
+        async with async_client.memories.with_streaming_response.list() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -214,6 +216,15 @@ class TestAsyncMemories:
     async def test_method_delete(self, async_client: AsyncCrosmos) -> None:
         memory = await async_client.memories.delete(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert memory is None
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_delete_with_all_params(self, async_client: AsyncCrosmos) -> None:
+        memory = await async_client.memories.delete(
+            memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert memory is None
@@ -223,7 +234,6 @@ class TestAsyncMemories:
     async def test_raw_response_delete(self, async_client: AsyncCrosmos) -> None:
         response = await async_client.memories.with_raw_response.delete(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -236,7 +246,6 @@ class TestAsyncMemories:
     async def test_streaming_response_delete(self, async_client: AsyncCrosmos) -> None:
         async with async_client.memories.with_streaming_response.delete(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -252,7 +261,6 @@ class TestAsyncMemories:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `memory_uuid` but received ''"):
             await async_client.memories.with_raw_response.delete(
                 memory_uuid="",
-                space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -260,6 +268,15 @@ class TestAsyncMemories:
     async def test_method_get(self, async_client: AsyncCrosmos) -> None:
         memory = await async_client.memories.get(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(Memory, memory, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_get_with_all_params(self, async_client: AsyncCrosmos) -> None:
+        memory = await async_client.memories.get(
+            memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(Memory, memory, path=["response"])
@@ -269,7 +286,6 @@ class TestAsyncMemories:
     async def test_raw_response_get(self, async_client: AsyncCrosmos) -> None:
         response = await async_client.memories.with_raw_response.get(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -282,7 +298,6 @@ class TestAsyncMemories:
     async def test_streaming_response_get(self, async_client: AsyncCrosmos) -> None:
         async with async_client.memories.with_streaming_response.get(
             memory_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -298,5 +313,4 @@ class TestAsyncMemories:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `memory_uuid` but received ''"):
             await async_client.memories.with_raw_response.get(
                 memory_uuid="",
-                space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             )

@@ -27,6 +27,6 @@ class Memory(BaseModel):
 
     memory_type: str
 
-    meta: Optional[Dict[str, object]] = None
+    meta: Optional[Dict[str, Optional[object]]] = None
 
     space_id: str

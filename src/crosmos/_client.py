@@ -25,7 +25,6 @@ from ._utils import (
     get_async_library,
 )
 from ._compat import cached_property
-from ._models import SecurityOptions
 from ._version import __version__
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import CrosmosError, APIStatusError
@@ -36,10 +35,9 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import jobs, usage, health, search, spaces, sources, entities, memories, conversations
+    from .resources import jobs, usage, search, spaces, sources, entities, memories, conversations
     from .resources.jobs import JobsResource, AsyncJobsResource
     from .resources.usage import UsageResource, AsyncUsageResource
-    from .resources.health import HealthResource, AsyncHealthResource
     from .resources.search import SearchResource, AsyncSearchResource
     from .resources.spaces import SpacesResource, AsyncSpacesResource
     from .resources.sources import SourcesResource, AsyncSourcesResource
@@ -163,12 +161,6 @@ class Crosmos(SyncAPIClient):
         return UsageResource(self)
 
     @cached_property
-    def health(self) -> HealthResource:
-        from .resources.health import HealthResource
-
-        return HealthResource(self)
-
-    @cached_property
     def with_raw_response(self) -> CrosmosWithRawResponse:
         return CrosmosWithRawResponse(self)
 
@@ -180,19 +172,6 @@ class Crosmos(SyncAPIClient):
     @override
     def qs(self) -> Querystring:
         return Querystring(array_format="comma")
-
-    @override
-    def _auth_headers(self, security: SecurityOptions) -> dict[str, str]:
-        headers: dict[str, str] = {}
-        if security.get("http_bearer", False):
-            for key, value in self._http_bearer.items():
-                headers.setdefault(key, value)
-        return headers
-
-    @property
-    def _http_bearer(self) -> dict[str, str]:
-        api_key = self.api_key
-        return {"Authorization": f"Bearer {api_key}"}
 
     @property
     @override
@@ -401,12 +380,6 @@ class AsyncCrosmos(AsyncAPIClient):
         return AsyncUsageResource(self)
 
     @cached_property
-    def health(self) -> AsyncHealthResource:
-        from .resources.health import AsyncHealthResource
-
-        return AsyncHealthResource(self)
-
-    @cached_property
     def with_raw_response(self) -> AsyncCrosmosWithRawResponse:
         return AsyncCrosmosWithRawResponse(self)
 
@@ -418,19 +391,6 @@ class AsyncCrosmos(AsyncAPIClient):
     @override
     def qs(self) -> Querystring:
         return Querystring(array_format="comma")
-
-    @override
-    def _auth_headers(self, security: SecurityOptions) -> dict[str, str]:
-        headers: dict[str, str] = {}
-        if security.get("http_bearer", False):
-            for key, value in self._http_bearer.items():
-                headers.setdefault(key, value)
-        return headers
-
-    @property
-    def _http_bearer(self) -> dict[str, str]:
-        api_key = self.api_key
-        return {"Authorization": f"Bearer {api_key}"}
 
     @property
     @override
@@ -580,12 +540,6 @@ class CrosmosWithRawResponse:
 
         return UsageResourceWithRawResponse(self._client.usage)
 
-    @cached_property
-    def health(self) -> health.HealthResourceWithRawResponse:
-        from .resources.health import HealthResourceWithRawResponse
-
-        return HealthResourceWithRawResponse(self._client.health)
-
 
 class AsyncCrosmosWithRawResponse:
     _client: AsyncCrosmos
@@ -640,12 +594,6 @@ class AsyncCrosmosWithRawResponse:
         from .resources.usage import AsyncUsageResourceWithRawResponse
 
         return AsyncUsageResourceWithRawResponse(self._client.usage)
-
-    @cached_property
-    def health(self) -> health.AsyncHealthResourceWithRawResponse:
-        from .resources.health import AsyncHealthResourceWithRawResponse
-
-        return AsyncHealthResourceWithRawResponse(self._client.health)
 
 
 class CrosmosWithStreamedResponse:
@@ -702,12 +650,6 @@ class CrosmosWithStreamedResponse:
 
         return UsageResourceWithStreamingResponse(self._client.usage)
 
-    @cached_property
-    def health(self) -> health.HealthResourceWithStreamingResponse:
-        from .resources.health import HealthResourceWithStreamingResponse
-
-        return HealthResourceWithStreamingResponse(self._client.health)
-
 
 class AsyncCrosmosWithStreamedResponse:
     _client: AsyncCrosmos
@@ -762,12 +704,6 @@ class AsyncCrosmosWithStreamedResponse:
         from .resources.usage import AsyncUsageResourceWithStreamingResponse
 
         return AsyncUsageResourceWithStreamingResponse(self._client.usage)
-
-    @cached_property
-    def health(self) -> health.AsyncHealthResourceWithStreamingResponse:
-        from .resources.health import AsyncHealthResourceWithStreamingResponse
-
-        return AsyncHealthResourceWithStreamingResponse(self._client.health)
 
 
 Client = Crosmos

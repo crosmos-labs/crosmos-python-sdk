@@ -3,18 +3,20 @@
 from __future__ import annotations
 
 from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import Literal, TypedDict
 
 __all__ = ["SourceListParams"]
 
 
 class SourceListParams(TypedDict, total=False):
-    content_type: Optional[str]
+    content_type: str
 
-    extraction_status: Optional[str]
+    extraction_status: Literal["pending", "processing", "completed", "failed"]
 
     limit: int
 
-    offset: int
+    offset: Optional[int]
 
-    space_id: Optional[str]
+    space_id: str
+
+    space_uuid: str

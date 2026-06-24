@@ -13,4 +13,4 @@ class SpaceCreateParams(TypedDict, total=False):
 
     description: Optional[str]
 
-    meta: Optional[Dict[str, object]]
+    meta: Optional[Dict[str, Optional[object]]]

@@ -62,7 +62,9 @@ class SearchResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Search:
         """
-        Perform a search for relevant memories within a specified memory space.
+        Search for relevant memories within a memory space using hybrid retrieval
+        (semantic + keyword + graph + temporal), RRF fusion, cross-encoder reranking,
+        and recency/temporal boosting.
 
         Args:
           query: The search query text
@@ -151,7 +153,9 @@ class AsyncSearchResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Search:
         """
-        Perform a search for relevant memories within a specified memory space.
+        Search for relevant memories within a memory space using hybrid retrieval
+        (semantic + keyword + graph + temporal), RRF fusion, cross-encoder reranking,
+        and recency/temporal boosting.
 
         Args:
           query: The search query text

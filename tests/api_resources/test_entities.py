@@ -20,31 +20,28 @@ class TestEntities:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: Crosmos) -> None:
-        entity = client.entities.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
+        entity = client.entities.list()
         assert_matches_type(EntityList, entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_with_all_params(self, client: Crosmos) -> None:
         entity = client.entities.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             entity_type="entity_type",
             limit=1,
             offset=0,
             order="asc",
             q="q",
             sort_by="name",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(EntityList, entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: Crosmos) -> None:
-        response = client.entities.with_raw_response.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
+        response = client.entities.with_raw_response.list()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -54,9 +51,7 @@ class TestEntities:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: Crosmos) -> None:
-        with client.entities.with_streaming_response.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        ) as response:
+        with client.entities.with_streaming_response.list() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -70,6 +65,15 @@ class TestEntities:
     def test_method_get(self, client: Crosmos) -> None:
         entity = client.entities.get(
             entity_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(EntityDetail, entity, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_get_with_all_params(self, client: Crosmos) -> None:
+        entity = client.entities.get(
+            entity_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(EntityDetail, entity, path=["response"])
@@ -79,7 +83,6 @@ class TestEntities:
     def test_raw_response_get(self, client: Crosmos) -> None:
         response = client.entities.with_raw_response.get(
             entity_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -92,7 +95,6 @@ class TestEntities:
     def test_streaming_response_get(self, client: Crosmos) -> None:
         with client.entities.with_streaming_response.get(
             entity_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -108,7 +110,6 @@ class TestEntities:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `entity_uuid` but received ''"):
             client.entities.with_raw_response.get(
                 entity_uuid="",
-                space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             )
 
 
@@ -120,31 +121,28 @@ class TestAsyncEntities:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncCrosmos) -> None:
-        entity = await async_client.entities.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
+        entity = await async_client.entities.list()
         assert_matches_type(EntityList, entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncCrosmos) -> None:
         entity = await async_client.entities.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             entity_type="entity_type",
             limit=1,
             offset=0,
             order="asc",
             q="q",
             sort_by="name",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(EntityList, entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncCrosmos) -> None:
-        response = await async_client.entities.with_raw_response.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
+        response = await async_client.entities.with_raw_response.list()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -154,9 +152,7 @@ class TestAsyncEntities:
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncCrosmos) -> None:
-        async with async_client.entities.with_streaming_response.list(
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        ) as response:
+        async with async_client.entities.with_streaming_response.list() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -170,6 +166,15 @@ class TestAsyncEntities:
     async def test_method_get(self, async_client: AsyncCrosmos) -> None:
         entity = await async_client.entities.get(
             entity_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(EntityDetail, entity, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_get_with_all_params(self, async_client: AsyncCrosmos) -> None:
+        entity = await async_client.entities.get(
+            entity_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(EntityDetail, entity, path=["response"])
@@ -179,7 +184,6 @@ class TestAsyncEntities:
     async def test_raw_response_get(self, async_client: AsyncCrosmos) -> None:
         response = await async_client.entities.with_raw_response.get(
             entity_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -192,7 +196,6 @@ class TestAsyncEntities:
     async def test_streaming_response_get(self, async_client: AsyncCrosmos) -> None:
         async with async_client.entities.with_streaming_response.get(
             entity_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -208,5 +211,4 @@ class TestAsyncEntities:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `entity_uuid` but received ''"):
             await async_client.entities.with_raw_response.get(
                 entity_uuid="",
-                space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             )

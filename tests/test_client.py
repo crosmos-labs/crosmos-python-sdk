@@ -23,7 +23,7 @@ from crosmos import Crosmos, AsyncCrosmos, APIResponseValidationError
 from crosmos._types import Omit
 from crosmos._utils import asyncify
 from crosmos._models import BaseModel, FinalRequestOptions
-from crosmos._exceptions import CrosmosError, APIStatusError, APITimeoutError, APIResponseValidationError
+from crosmos._exceptions import APIStatusError, APITimeoutError, APIResponseValidationError
 from crosmos._base_client import (
     DEFAULT_TIMEOUT,
     HTTPX_DEFAULT_TIMEOUT,
@@ -396,16 +396,6 @@ class TestCrosmos:
 
         test_client.close()
         test_client2.close()
-
-    def test_validate_headers(self) -> None:
-        client = Crosmos(base_url=base_url, api_key=api_key, _strict_response_validation=True)
-        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
-        assert request.headers.get("Authorization") == f"Bearer {api_key}"
-
-        with pytest.raises(CrosmosError):
-            with update_env(**{"CROSMOS_API_KEY": Omit()}):
-                client2 = Crosmos(base_url=base_url, api_key=None, _strict_response_validation=True)
-            _ = client2
 
     def test_default_query_option(self) -> None:
         client = Crosmos(
@@ -1321,16 +1311,6 @@ class TestAsyncCrosmos:
 
         await test_client.close()
         await test_client2.close()
-
-    def test_validate_headers(self) -> None:
-        client = AsyncCrosmos(base_url=base_url, api_key=api_key, _strict_response_validation=True)
-        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
-        assert request.headers.get("Authorization") == f"Bearer {api_key}"
-
-        with pytest.raises(CrosmosError):
-            with update_env(**{"CROSMOS_API_KEY": Omit()}):
-                client2 = AsyncCrosmos(base_url=base_url, api_key=None, _strict_response_validation=True)
-            _ = client2
 
     async def test_default_query_option(self) -> None:
         client = AsyncCrosmos(

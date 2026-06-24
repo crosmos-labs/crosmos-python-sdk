@@ -3,20 +3,22 @@
 from __future__ import annotations
 
 from typing import Optional
-from typing_extensions import Literal, Required, TypedDict
+from typing_extensions import Literal, TypedDict
 
 __all__ = ["MemoryListParams"]
 
 
 class MemoryListParams(TypedDict, total=False):
-    space_uuid: Required[str]
-
     limit: int
 
-    memory_type: Optional[Literal["viewpoint", "semantic", "episode"]]
+    memory_type: Literal["viewpoint", "semantic", "episode", "inference"]
 
-    offset: int
+    offset: Optional[int]
 
     order: Literal["asc", "desc"]
 
     sort_by: Literal["created_at", "importance_score", "event_time", "last_accessed_at", "access_frequency"]
+
+    space_id: str
+
+    space_uuid: str
