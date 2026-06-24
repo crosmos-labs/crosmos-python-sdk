@@ -9,8 +9,8 @@ __all__ = ["SpaceListParams"]
 
 
 class SpaceListParams(TypedDict, total=False):
-    name: Optional[str]
-    """Exact-match filter on space name within the active org.
+    limit: int
 
-    Returns 0 or 1 spaces (names are unique per org).
-    """
+    name: str
+
+    offset: Optional[int]

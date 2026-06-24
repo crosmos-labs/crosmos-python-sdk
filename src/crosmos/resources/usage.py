@@ -47,8 +47,8 @@ class UsageResource(SyncAPIResource):
     def get(
         self,
         *,
-        end_date: Union[str, date, None] | Omit = omit,
-        start_date: Union[str, date, None] | Omit = omit,
+        end_date: Union[str, date] | Omit = omit,
+        start_date: Union[str, date] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -57,13 +57,9 @@ class UsageResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Usage:
         """
-        Return org-level usage for the active billing period and plan limits.
+        Get org usage
 
         Args:
-          end_date: End date (defaults to today)
-
-          start_date: Start date (defaults to 1st of current month)
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -114,8 +110,8 @@ class AsyncUsageResource(AsyncAPIResource):
     async def get(
         self,
         *,
-        end_date: Union[str, date, None] | Omit = omit,
-        start_date: Union[str, date, None] | Omit = omit,
+        end_date: Union[str, date] | Omit = omit,
+        start_date: Union[str, date] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -124,13 +120,9 @@ class AsyncUsageResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Usage:
         """
-        Return org-level usage for the active billing period and plan limits.
+        Get org usage
 
         Args:
-          end_date: End date (defaults to today)
-
-          start_date: Start date (defaults to 1st of current month)
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request

@@ -12,8 +12,6 @@ __all__ = ["UsageGetParams"]
 
 
 class UsageGetParams(TypedDict, total=False):
-    end_date: Annotated[Union[str, date, None], PropertyInfo(format="iso8601")]
-    """End date (defaults to today)"""
+    end_date: Annotated[Union[str, date], PropertyInfo(format="iso8601")]
 
-    start_date: Annotated[Union[str, date, None], PropertyInfo(format="iso8601")]
-    """Start date (defaults to 1st of current month)"""
+    start_date: Annotated[Union[str, date], PropertyInfo(format="iso8601")]

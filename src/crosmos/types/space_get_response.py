@@ -1,14 +1,14 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 from datetime import datetime
 
 from .._models import BaseModel
 
-__all__ = ["SpaceList", "Space"]
+__all__ = ["SpaceGetResponse"]
 
 
-class Space(BaseModel):
+class SpaceGetResponse(BaseModel):
     id: str
 
     created_at: datetime
@@ -22,9 +22,3 @@ class Space(BaseModel):
     org_id: str
 
     updated_at: datetime
-
-
-class SpaceList(BaseModel):
-    spaces: List[Space]
-
-    total: int

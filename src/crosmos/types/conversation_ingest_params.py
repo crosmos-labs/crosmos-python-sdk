@@ -3,31 +3,26 @@
 from __future__ import annotations
 
 from typing import Dict, Iterable, Optional
-from typing_extensions import Required, TypedDict
+from typing_extensions import Literal, Required, TypedDict
 
 __all__ = ["ConversationIngestParams", "Message"]
 
 
 class ConversationIngestParams(TypedDict, total=False):
     messages: Required[Iterable[Message]]
-    """Ordered conversation messages"""
 
     space_id: Required[str]
-    """Memory space to ingest into"""
 
-    meta: Optional[Dict[str, object]]
-    """Optional metadata attached to all created sources"""
+    meta: Optional[Dict[str, Optional[object]]]
 
-    session_date: Optional[str]
-    """ISO date string for when the session occurred"""
+    session_date: str
 
-    session_id: Optional[str]
-    """Session identifier. Auto-generated if not provided."""
+    session_id: str
+
+    visibility: Literal["private", "org"]
 
 
 class Message(TypedDict, total=False):
     content: Required[str]
-    """Message content"""
 
     role: Required[str]
-    """Speaker role (e.g. 'user', 'assistant')"""

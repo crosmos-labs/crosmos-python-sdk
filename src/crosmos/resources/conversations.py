@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Dict, Iterable, Optional
+from typing_extensions import Literal
 
 import httpx
 
@@ -48,9 +49,10 @@ class ConversationsResource(SyncAPIResource):
         *,
         messages: Iterable[conversation_ingest_params.Message],
         space_id: str,
-        meta: Optional[Dict[str, object]] | Omit = omit,
-        session_date: Optional[str] | Omit = omit,
-        session_id: Optional[str] | Omit = omit,
+        meta: Optional[Dict[str, Optional[object]]] | Omit = omit,
+        session_date: str | Omit = omit,
+        session_id: str | Omit = omit,
+        visibility: Literal["private", "org"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -58,22 +60,13 @@ class ConversationsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> IngestConversation:
-        """
-        Ingest a multi-turn conversation into the knowledge graph.
+        """Ingest a multi-turn conversation.
 
-        - Each turn is converted into a source with provenance metadata.
+        The conversation is stored as a single source
+        and segmented at ingestion into windows of 4 turns; each window is extracted
+        independently with the prior window as lookback context for pronoun resolution.
 
         Args:
-          messages: Ordered conversation messages
-
-          space_id: Memory space to ingest into
-
-          meta: Optional metadata attached to all created sources
-
-          session_date: ISO date string for when the session occurred
-
-          session_id: Session identifier. Auto-generated if not provided.
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -91,6 +84,7 @@ class ConversationsResource(SyncAPIResource):
                     "meta": meta,
                     "session_date": session_date,
                     "session_id": session_id,
+                    "visibility": visibility,
                 },
                 conversation_ingest_params.ConversationIngestParams,
             ),
@@ -126,9 +120,10 @@ class AsyncConversationsResource(AsyncAPIResource):
         *,
         messages: Iterable[conversation_ingest_params.Message],
         space_id: str,
-        meta: Optional[Dict[str, object]] | Omit = omit,
-        session_date: Optional[str] | Omit = omit,
-        session_id: Optional[str] | Omit = omit,
+        meta: Optional[Dict[str, Optional[object]]] | Omit = omit,
+        session_date: str | Omit = omit,
+        session_id: str | Omit = omit,
+        visibility: Literal["private", "org"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -136,22 +131,13 @@ class AsyncConversationsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> IngestConversation:
-        """
-        Ingest a multi-turn conversation into the knowledge graph.
+        """Ingest a multi-turn conversation.
 
-        - Each turn is converted into a source with provenance metadata.
+        The conversation is stored as a single source
+        and segmented at ingestion into windows of 4 turns; each window is extracted
+        independently with the prior window as lookback context for pronoun resolution.
 
         Args:
-          messages: Ordered conversation messages
-
-          space_id: Memory space to ingest into
-
-          meta: Optional metadata attached to all created sources
-
-          session_date: ISO date string for when the session occurred
-
-          session_id: Session identifier. Auto-generated if not provided.
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -169,6 +155,7 @@ class AsyncConversationsResource(AsyncAPIResource):
                     "meta": meta,
                     "session_date": session_date,
                     "session_id": session_id,
+                    "visibility": visibility,
                 },
                 conversation_ingest_params.ConversationIngestParams,
             ),

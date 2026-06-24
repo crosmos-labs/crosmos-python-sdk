@@ -3,15 +3,15 @@
 Types:
 
 ```python
-from crosmos.types import Space, SpaceList
+from crosmos.types import SpaceList, SpaceCreateResponse, SpaceGetResponse
 ```
 
 Methods:
 
-- <code title="post /api/v1/spaces">client.spaces.<a href="./src/crosmos/resources/spaces.py">create</a>(\*\*<a href="src/crosmos/types/space_create_params.py">params</a>) -> <a href="./src/crosmos/types/space.py">Space</a></code>
+- <code title="post /api/v1/spaces">client.spaces.<a href="./src/crosmos/resources/spaces.py">create</a>(\*\*<a href="src/crosmos/types/space_create_params.py">params</a>) -> <a href="./src/crosmos/types/space_create_response.py">SpaceCreateResponse</a></code>
 - <code title="get /api/v1/spaces">client.spaces.<a href="./src/crosmos/resources/spaces.py">list</a>(\*\*<a href="src/crosmos/types/space_list_params.py">params</a>) -> <a href="./src/crosmos/types/space_list.py">SpaceList</a></code>
 - <code title="delete /api/v1/spaces/{space_uuid}">client.spaces.<a href="./src/crosmos/resources/spaces.py">delete</a>(space_uuid) -> None</code>
-- <code title="get /api/v1/spaces/{space_uuid}">client.spaces.<a href="./src/crosmos/resources/spaces.py">get</a>(space_uuid) -> <a href="./src/crosmos/types/space.py">Space</a></code>
+- <code title="get /api/v1/spaces/{space_uuid}">client.spaces.<a href="./src/crosmos/resources/spaces.py">get</a>(space_uuid) -> <a href="./src/crosmos/types/space_get_response.py">SpaceGetResponse</a></code>
 
 # Search
 
@@ -84,12 +84,12 @@ Methods:
 Types:
 
 ```python
-from crosmos.types import Job
+from crosmos.types import JobGetStatusResponse
 ```
 
 Methods:
 
-- <code title="get /api/v1/jobs/{job_id}">client.jobs.<a href="./src/crosmos/resources/jobs.py">get_status</a>(job_id) -> <a href="./src/crosmos/types/job.py">Job</a></code>
+- <code title="get /api/v1/jobs/{job_id}">client.jobs.<a href="./src/crosmos/resources/jobs.py">get_status</a>(job_id) -> <a href="./src/crosmos/types/job_get_status_response.py">JobGetStatusResponse</a></code>
 
 # Usage
 
@@ -102,15 +102,3 @@ from crosmos.types import Usage
 Methods:
 
 - <code title="get /api/v1/usage">client.usage.<a href="./src/crosmos/resources/usage.py">get</a>(\*\*<a href="src/crosmos/types/usage_get_params.py">params</a>) -> <a href="./src/crosmos/types/usage.py">Usage</a></code>
-
-# Health
-
-Types:
-
-```python
-from crosmos.types import HealthCheckResponse
-```
-
-Methods:
-
-- <code title="get /health">client.health.<a href="./src/crosmos/resources/health.py">check</a>() -> <a href="./src/crosmos/types/health_check_response.py">HealthCheckResponse</a></code>

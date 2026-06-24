@@ -34,11 +34,10 @@ pip install crosmos
 The full API of this library can be found in [api.md](api.md).
 
 ```python
-import os
 from crosmos import Crosmos
 
 client = Crosmos(
-    api_key=os.environ.get("CROSMOS_API_KEY"),  # This is the default and can be omitted
+    api_key="My API Key",
 )
 
 search = client.search.hybrid(
@@ -48,22 +47,16 @@ search = client.search.hybrid(
 print(search.candidates)
 ```
 
-While you can provide an `api_key` keyword argument,
-we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `CROSMOS_API_KEY="My API Key"` to your `.env` file
-so that your API Key is not stored in source control.
-
 ## Async usage
 
 Simply import `AsyncCrosmos` instead of `Crosmos` and use `await` with each API call:
 
 ```python
-import os
 import asyncio
 from crosmos import AsyncCrosmos
 
 client = AsyncCrosmos(
-    api_key=os.environ.get("CROSMOS_API_KEY"),  # This is the default and can be omitted
+    api_key="My API Key",
 )
 
 
@@ -94,7 +87,6 @@ pip install crosmos[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
-import os
 import asyncio
 from crosmos import DefaultAioHttpClient
 from crosmos import AsyncCrosmos
@@ -102,7 +94,7 @@ from crosmos import AsyncCrosmos
 
 async def main() -> None:
     async with AsyncCrosmos(
-        api_key=os.environ.get("CROSMOS_API_KEY"),  # This is the default and can be omitted
+        api_key="My API Key",
         http_client=DefaultAioHttpClient(),
     ) as client:
         search = await client.search.hybrid(
@@ -137,7 +129,9 @@ All errors inherit from `crosmos.APIError`.
 import crosmos
 from crosmos import Crosmos
 
-client = Crosmos()
+client = Crosmos(
+    api_key="My API Key",
+)
 
 try:
     client.search.hybrid(
@@ -181,6 +175,7 @@ from crosmos import Crosmos
 
 # Configure the default for all requests:
 client = Crosmos(
+    api_key="My API Key",
     # default is 2
     max_retries=0,
 )
@@ -202,12 +197,14 @@ from crosmos import Crosmos
 
 # Configure the default for all requests:
 client = Crosmos(
+    api_key="My API Key",
     # 20 seconds (default is 1 minute)
     timeout=20.0,
 )
 
 # More granular control:
 client = Crosmos(
+    api_key="My API Key",
     timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
 )
 
@@ -255,7 +252,9 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 ```py
 from crosmos import Crosmos
 
-client = Crosmos()
+client = Crosmos(
+    api_key="My API Key",
+)
 response = client.search.with_raw_response.hybrid(
     query="What is my primary language?",
     space_id="<your-space-uuid>",
@@ -336,6 +335,7 @@ import httpx
 from crosmos import Crosmos, DefaultHttpxClient
 
 client = Crosmos(
+    api_key="My API Key",
     # Or use the `CROSMOS_BASE_URL` env var
     base_url="http://my.test.server.example.com:8083",
     http_client=DefaultHttpxClient(
@@ -358,7 +358,9 @@ By default the library closes underlying HTTP connections whenever the client is
 ```py
 from crosmos import Crosmos
 
-with Crosmos() as client:
+with Crosmos(
+    api_key="My API Key",
+) as client:
   # make requests here
   ...
 

@@ -48,13 +48,14 @@ class MemoriesResource(SyncAPIResource):
     def list(
         self,
         *,
-        space_uuid: str,
         limit: int | Omit = omit,
-        memory_type: Optional[Literal["viewpoint", "semantic", "episode"]] | Omit = omit,
-        offset: int | Omit = omit,
+        memory_type: Literal["viewpoint", "semantic", "episode", "inference"] | Omit = omit,
+        offset: Optional[int] | Omit = omit,
         order: Literal["asc", "desc"] | Omit = omit,
         sort_by: Literal["created_at", "importance_score", "event_time", "last_accessed_at", "access_frequency"]
         | Omit = omit,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -63,7 +64,7 @@ class MemoriesResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> MemoryList:
         """
-        List memories in a memory space.
+        List memories
 
         Args:
           extra_headers: Send extra headers
@@ -83,12 +84,13 @@ class MemoriesResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
-                        "space_uuid": space_uuid,
                         "limit": limit,
                         "memory_type": memory_type,
                         "offset": offset,
                         "order": order,
                         "sort_by": sort_by,
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
                     },
                     memory_list_params.MemoryListParams,
                 ),
@@ -100,7 +102,8 @@ class MemoriesResource(SyncAPIResource):
         self,
         memory_uuid: str,
         *,
-        space_uuid: str,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -109,7 +112,7 @@ class MemoriesResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> None:
         """
-        Soft-delete a memory and cascade to all edges whose provenance is this memory.
+        Forget memory
 
         Args:
           extra_headers: Send extra headers
@@ -130,7 +133,13 @@ class MemoriesResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=maybe_transform({"space_uuid": space_uuid}, memory_delete_params.MemoryDeleteParams),
+                query=maybe_transform(
+                    {
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
+                    },
+                    memory_delete_params.MemoryDeleteParams,
+                ),
             ),
             cast_to=NoneType,
         )
@@ -139,7 +148,8 @@ class MemoriesResource(SyncAPIResource):
         self,
         memory_uuid: str,
         *,
-        space_uuid: str,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -148,7 +158,7 @@ class MemoriesResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Memory:
         """
-        Get a memory by UUID.
+        Get memory
 
         Args:
           extra_headers: Send extra headers
@@ -168,7 +178,13 @@ class MemoriesResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=maybe_transform({"space_uuid": space_uuid}, memory_get_params.MemoryGetParams),
+                query=maybe_transform(
+                    {
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
+                    },
+                    memory_get_params.MemoryGetParams,
+                ),
             ),
             cast_to=Memory,
         )
@@ -197,13 +213,14 @@ class AsyncMemoriesResource(AsyncAPIResource):
     async def list(
         self,
         *,
-        space_uuid: str,
         limit: int | Omit = omit,
-        memory_type: Optional[Literal["viewpoint", "semantic", "episode"]] | Omit = omit,
-        offset: int | Omit = omit,
+        memory_type: Literal["viewpoint", "semantic", "episode", "inference"] | Omit = omit,
+        offset: Optional[int] | Omit = omit,
         order: Literal["asc", "desc"] | Omit = omit,
         sort_by: Literal["created_at", "importance_score", "event_time", "last_accessed_at", "access_frequency"]
         | Omit = omit,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -212,7 +229,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> MemoryList:
         """
-        List memories in a memory space.
+        List memories
 
         Args:
           extra_headers: Send extra headers
@@ -232,12 +249,13 @@ class AsyncMemoriesResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
-                        "space_uuid": space_uuid,
                         "limit": limit,
                         "memory_type": memory_type,
                         "offset": offset,
                         "order": order,
                         "sort_by": sort_by,
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
                     },
                     memory_list_params.MemoryListParams,
                 ),
@@ -249,7 +267,8 @@ class AsyncMemoriesResource(AsyncAPIResource):
         self,
         memory_uuid: str,
         *,
-        space_uuid: str,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -258,7 +277,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> None:
         """
-        Soft-delete a memory and cascade to all edges whose provenance is this memory.
+        Forget memory
 
         Args:
           extra_headers: Send extra headers
@@ -279,7 +298,13 @@ class AsyncMemoriesResource(AsyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform({"space_uuid": space_uuid}, memory_delete_params.MemoryDeleteParams),
+                query=await async_maybe_transform(
+                    {
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
+                    },
+                    memory_delete_params.MemoryDeleteParams,
+                ),
             ),
             cast_to=NoneType,
         )
@@ -288,7 +313,8 @@ class AsyncMemoriesResource(AsyncAPIResource):
         self,
         memory_uuid: str,
         *,
-        space_uuid: str,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -297,7 +323,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Memory:
         """
-        Get a memory by UUID.
+        Get memory
 
         Args:
           extra_headers: Send extra headers
@@ -317,7 +343,13 @@ class AsyncMemoriesResource(AsyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform({"space_uuid": space_uuid}, memory_get_params.MemoryGetParams),
+                query=await async_maybe_transform(
+                    {
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
+                    },
+                    memory_get_params.MemoryGetParams,
+                ),
             ),
             cast_to=Memory,
         )

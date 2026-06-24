@@ -1,14 +1,15 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import List
 from datetime import datetime
 
+from .entity import Entity
 from .._models import BaseModel
 
-__all__ = ["EntityDetail", "Memory"]
+__all__ = ["EntityDetail", "EntityDetailMemory"]
 
 
-class Memory(BaseModel):
+class EntityDetailMemory(BaseModel):
     content: str
 
     created_at: datetime
@@ -18,21 +19,5 @@ class Memory(BaseModel):
     memory_type: str
 
 
-class EntityDetail(BaseModel):
-    id: str
-
-    created_at: datetime
-
-    edge_count: int
-    """Total incoming + outgoing edges"""
-
-    entity_type: Optional[str] = None
-
-    memories: List[Memory]
-    """Recent memories mentioning this entity"""
-
-    name: str
-
-    space_id: str
-
-    updated_at: datetime
+class EntityDetail(Entity):
+    memories: List[EntityDetailMemory]

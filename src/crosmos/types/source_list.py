@@ -1,22 +1,26 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Union, Optional
+from typing import Dict, List, Optional
 from datetime import datetime
+from typing_extensions import Literal
 
-from .source import Source
 from .._models import BaseModel
 
-__all__ = ["SourceList", "SourcesUnionMember0"]
+__all__ = ["SourceList", "Source"]
 
 
-class SourcesUnionMember0(BaseModel):
+class Source(BaseModel):
     id: str
+
+    content_preview: str
 
     content_type: str
 
     created_at: datetime
 
-    extraction_status: str
+    extraction_status: Literal["pending", "processing", "completed", "failed"]
+
+    meta: Optional[Dict[str, Optional[object]]] = None
 
     space_id: str
 
@@ -24,16 +28,10 @@ class SourcesUnionMember0(BaseModel):
 
     updated_at: datetime
 
-    content_preview: Optional[str] = None
-    """First 200 chars of source content for list views"""
-
-    meta: Optional[object] = None
-
 
 class SourceList(BaseModel):
     count: int
 
-    sources: Union[List[SourcesUnionMember0], List[Source]]
+    sources: List[Source]
 
-    total: Optional[int] = None
-    """Total matching sources (for pagination)"""
+    total: int
