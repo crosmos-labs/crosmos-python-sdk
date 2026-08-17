@@ -18,8 +18,9 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from .._base_client import make_request_options
-from ..types.entity_list import EntityList
+from ..pagination import SyncEntitiesOffsetPage, AsyncEntitiesOffsetPage
+from .._base_client import AsyncPaginator, make_request_options
+from ..types.entity import Entity
 from ..types.entity_detail import EntityDetail
 
 __all__ = ["EntitiesResource", "AsyncEntitiesResource"]
@@ -62,7 +63,7 @@ class EntitiesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> EntityList:
+    ) -> SyncEntitiesOffsetPage[Entity]:
         """
         List entities
 
@@ -75,8 +76,9 @@ class EntitiesResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return self._get(
+        return self._get_api_list(
             "/api/v1/entities",
+            page=SyncEntitiesOffsetPage[Entity],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -96,7 +98,7 @@ class EntitiesResource(SyncAPIResource):
                     entity_list_params.EntityListParams,
                 ),
             ),
-            cast_to=EntityList,
+            model=Entity,
         )
 
     def get(
@@ -165,7 +167,7 @@ class AsyncEntitiesResource(AsyncAPIResource):
         """
         return AsyncEntitiesResourceWithStreamingResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
         entity_type: str | Omit = omit,
@@ -182,7 +184,7 @@ class AsyncEntitiesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> EntityList:
+    ) -> AsyncPaginator[Entity, AsyncEntitiesOffsetPage[Entity]]:
         """
         List entities
 
@@ -195,14 +197,15 @@ class AsyncEntitiesResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return await self._get(
+        return self._get_api_list(
             "/api/v1/entities",
+            page=AsyncEntitiesOffsetPage[Entity],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform(
+                query=maybe_transform(
                     {
                         "entity_type": entity_type,
                         "limit": limit,
@@ -216,7 +219,7 @@ class AsyncEntitiesResource(AsyncAPIResource):
                     entity_list_params.EntityListParams,
                 ),
             ),
-            cast_to=EntityList,
+            model=Entity,
         )
 
     async def get(
