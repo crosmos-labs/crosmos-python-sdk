@@ -9,7 +9,8 @@ import pytest
 
 from crosmos import Crosmos, AsyncCrosmos
 from tests.utils import assert_matches_type
-from crosmos.types import Space, SpaceList
+from crosmos.types import Space
+from crosmos.pagination import SyncSpacesOffsetPage, AsyncSpacesOffsetPage
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -65,15 +66,17 @@ class TestSpaces:
     @parametrize
     def test_method_list(self, client: Crosmos) -> None:
         space = client.spaces.list()
-        assert_matches_type(SpaceList, space, path=["response"])
+        assert_matches_type(SyncSpacesOffsetPage[Space], space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_with_all_params(self, client: Crosmos) -> None:
         space = client.spaces.list(
-            name="name",
+            limit=1,
+            name="x",
+            offset=0,
         )
-        assert_matches_type(SpaceList, space, path=["response"])
+        assert_matches_type(SyncSpacesOffsetPage[Space], space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -83,7 +86,7 @@ class TestSpaces:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         space = response.parse()
-        assert_matches_type(SpaceList, space, path=["response"])
+        assert_matches_type(SyncSpacesOffsetPage[Space], space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -93,7 +96,7 @@ class TestSpaces:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             space = response.parse()
-            assert_matches_type(SpaceList, space, path=["response"])
+            assert_matches_type(SyncSpacesOffsetPage[Space], space, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -235,15 +238,17 @@ class TestAsyncSpaces:
     @parametrize
     async def test_method_list(self, async_client: AsyncCrosmos) -> None:
         space = await async_client.spaces.list()
-        assert_matches_type(SpaceList, space, path=["response"])
+        assert_matches_type(AsyncSpacesOffsetPage[Space], space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncCrosmos) -> None:
         space = await async_client.spaces.list(
-            name="name",
+            limit=1,
+            name="x",
+            offset=0,
         )
-        assert_matches_type(SpaceList, space, path=["response"])
+        assert_matches_type(AsyncSpacesOffsetPage[Space], space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -253,7 +258,7 @@ class TestAsyncSpaces:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         space = await response.parse()
-        assert_matches_type(SpaceList, space, path=["response"])
+        assert_matches_type(AsyncSpacesOffsetPage[Space], space, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -263,7 +268,7 @@ class TestAsyncSpaces:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             space = await response.parse()
-            assert_matches_type(SpaceList, space, path=["response"])
+            assert_matches_type(AsyncSpacesOffsetPage[Space], space, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

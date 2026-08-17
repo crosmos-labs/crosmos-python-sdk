@@ -2,25 +2,44 @@
 
 from typing import Dict, List, Optional
 from datetime import datetime
+from typing_extensions import Literal
 
 from .._models import BaseModel
 
-__all__ = ["Job"]
+__all__ = ["Job", "Result"]
 
 
-class Job(BaseModel):
-    created_at: datetime
+class Result(BaseModel):
+    edge_count: int
 
-    job_id: str
+    entity_count: int
+
+    failed_source_ids: List[int]
+
+    memory_count: int
 
     source_ids: List[int]
 
-    status: str
-
-    completed_at: Optional[datetime] = None
+    tokens_used: int
 
     error_message: Optional[str] = None
 
-    result: Optional[Dict[str, object]] = None
+    source_errors: Optional[Dict[str, str]] = None
+
+
+class Job(BaseModel):
+    completed_at: Optional[datetime] = None
+
+    created_at: datetime
+
+    error_message: Optional[str] = None
+
+    job_id: str
+
+    result: Optional[Result] = None
+
+    source_ids: List[int]
 
     started_at: Optional[datetime] = None
+
+    status: Literal["pending", "processing", "completed", "partial", "failed", "cancelled"]

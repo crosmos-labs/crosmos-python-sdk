@@ -18,8 +18,9 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from .._base_client import make_request_options
-from ..types.entity_list import EntityList
+from ..pagination import SyncEntitiesOffsetPage, AsyncEntitiesOffsetPage
+from .._base_client import AsyncPaginator, make_request_options
+from ..types.entity import Entity
 from ..types.entity_detail import EntityDetail
 
 __all__ = ["EntitiesResource", "AsyncEntitiesResource"]
@@ -48,28 +49,25 @@ class EntitiesResource(SyncAPIResource):
     def list(
         self,
         *,
-        space_uuid: str,
-        entity_type: Optional[str] | Omit = omit,
+        entity_type: str | Omit = omit,
         limit: int | Omit = omit,
-        offset: int | Omit = omit,
+        offset: Optional[int] | Omit = omit,
         order: Literal["asc", "desc"] | Omit = omit,
-        q: Optional[str] | Omit = omit,
+        q: str | Omit = omit,
         sort_by: Literal["name", "edge_count", "created_at"] | Omit = omit,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> EntityList:
+    ) -> SyncEntitiesOffsetPage[Entity]:
         """
-        List Entities
+        List entities
 
         Args:
-          entity_type: Filter by entity type
-
-          q: Search entities by name
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -78,8 +76,9 @@ class EntitiesResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return self._get(
+        return self._get_api_list(
             "/api/v1/entities",
+            page=SyncEntitiesOffsetPage[Entity],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -87,25 +86,27 @@ class EntitiesResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
-                        "space_uuid": space_uuid,
                         "entity_type": entity_type,
                         "limit": limit,
                         "offset": offset,
                         "order": order,
                         "q": q,
                         "sort_by": sort_by,
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
                     },
                     entity_list_params.EntityListParams,
                 ),
             ),
-            cast_to=EntityList,
+            model=Entity,
         )
 
     def get(
         self,
         entity_uuid: str,
         *,
-        space_uuid: str,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -114,7 +115,7 @@ class EntitiesResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> EntityDetail:
         """
-        Get Entity
+        Get entity
 
         Args:
           extra_headers: Send extra headers
@@ -134,7 +135,13 @@ class EntitiesResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=maybe_transform({"space_uuid": space_uuid}, entity_get_params.EntityGetParams),
+                query=maybe_transform(
+                    {
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
+                    },
+                    entity_get_params.EntityGetParams,
+                ),
             ),
             cast_to=EntityDetail,
         )
@@ -160,31 +167,28 @@ class AsyncEntitiesResource(AsyncAPIResource):
         """
         return AsyncEntitiesResourceWithStreamingResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
-        space_uuid: str,
-        entity_type: Optional[str] | Omit = omit,
+        entity_type: str | Omit = omit,
         limit: int | Omit = omit,
-        offset: int | Omit = omit,
+        offset: Optional[int] | Omit = omit,
         order: Literal["asc", "desc"] | Omit = omit,
-        q: Optional[str] | Omit = omit,
+        q: str | Omit = omit,
         sort_by: Literal["name", "edge_count", "created_at"] | Omit = omit,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> EntityList:
+    ) -> AsyncPaginator[Entity, AsyncEntitiesOffsetPage[Entity]]:
         """
-        List Entities
+        List entities
 
         Args:
-          entity_type: Filter by entity type
-
-          q: Search entities by name
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -193,34 +197,37 @@ class AsyncEntitiesResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return await self._get(
+        return self._get_api_list(
             "/api/v1/entities",
+            page=AsyncEntitiesOffsetPage[Entity],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform(
+                query=maybe_transform(
                     {
-                        "space_uuid": space_uuid,
                         "entity_type": entity_type,
                         "limit": limit,
                         "offset": offset,
                         "order": order,
                         "q": q,
                         "sort_by": sort_by,
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
                     },
                     entity_list_params.EntityListParams,
                 ),
             ),
-            cast_to=EntityList,
+            model=Entity,
         )
 
     async def get(
         self,
         entity_uuid: str,
         *,
-        space_uuid: str,
+        space_id: str | Omit = omit,
+        space_uuid: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -229,7 +236,7 @@ class AsyncEntitiesResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> EntityDetail:
         """
-        Get Entity
+        Get entity
 
         Args:
           extra_headers: Send extra headers
@@ -249,7 +256,13 @@ class AsyncEntitiesResource(AsyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform({"space_uuid": space_uuid}, entity_get_params.EntityGetParams),
+                query=await async_maybe_transform(
+                    {
+                        "space_id": space_id,
+                        "space_uuid": space_uuid,
+                    },
+                    entity_get_params.EntityGetParams,
+                ),
             ),
             cast_to=EntityDetail,
         )

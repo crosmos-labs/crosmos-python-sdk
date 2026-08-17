@@ -15,7 +15,7 @@ class Space(BaseModel):
 
     description: Optional[str] = None
 
-    meta: Optional[Dict[str, object]] = None
+    meta: Optional[Dict[str, Optional[object]]] = None
 
     name: str
 

@@ -52,6 +52,7 @@ class SearchResource(SyncAPIResource):
         graph: bool | Omit = omit,
         include_source: bool | Omit = omit,
         limit: int | Omit = omit,
+        recall_id: str | Omit = omit,
         recency_bias: Optional[float] | Omit = omit,
         rerank: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -62,7 +63,9 @@ class SearchResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Search:
         """
-        Perform a search for relevant memories within a specified memory space.
+        Search for relevant memories within a memory space using hybrid retrieval
+        (semantic + keyword + graph + temporal), RRF fusion, cross-encoder reranking,
+        and recency/temporal boosting.
 
         Args:
           query: The search query text
@@ -76,6 +79,12 @@ class SearchResource(SyncAPIResource):
           include_source: Include original source text in results.
 
           limit: Max number of results to return
+
+          recall_id: Optional stable id for one logical recall. Retries of the same logical search
+              should reuse the same value: the server then reuses a single concurrency slot
+              instead of counting each retry as a new concurrent search. Omit it and behavior
+              is unchanged. Generate a fresh id per distinct search — reusing one id across
+              genuinely different searches makes them share a slot.
 
           recency_bias: Override recency weighting. 0.0 disables recency, higher values favor recent
               memories.
@@ -100,6 +109,7 @@ class SearchResource(SyncAPIResource):
                     "graph": graph,
                     "include_source": include_source,
                     "limit": limit,
+                    "recall_id": recall_id,
                     "recency_bias": recency_bias,
                     "rerank": rerank,
                 },
@@ -141,6 +151,7 @@ class AsyncSearchResource(AsyncAPIResource):
         graph: bool | Omit = omit,
         include_source: bool | Omit = omit,
         limit: int | Omit = omit,
+        recall_id: str | Omit = omit,
         recency_bias: Optional[float] | Omit = omit,
         rerank: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -151,7 +162,9 @@ class AsyncSearchResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Search:
         """
-        Perform a search for relevant memories within a specified memory space.
+        Search for relevant memories within a memory space using hybrid retrieval
+        (semantic + keyword + graph + temporal), RRF fusion, cross-encoder reranking,
+        and recency/temporal boosting.
 
         Args:
           query: The search query text
@@ -165,6 +178,12 @@ class AsyncSearchResource(AsyncAPIResource):
           include_source: Include original source text in results.
 
           limit: Max number of results to return
+
+          recall_id: Optional stable id for one logical recall. Retries of the same logical search
+              should reuse the same value: the server then reuses a single concurrency slot
+              instead of counting each retry as a new concurrent search. Omit it and behavior
+              is unchanged. Generate a fresh id per distinct search — reusing one id across
+              genuinely different searches makes them share a slot.
 
           recency_bias: Override recency weighting. 0.0 disables recency, higher values favor recent
               memories.
@@ -189,6 +208,7 @@ class AsyncSearchResource(AsyncAPIResource):
                     "graph": graph,
                     "include_source": include_source,
                     "limit": limit,
+                    "recall_id": recall_id,
                     "recency_bias": recency_bias,
                     "rerank": rerank,
                 },

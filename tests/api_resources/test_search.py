@@ -36,6 +36,7 @@ class TestSearch:
             graph=True,
             include_source=True,
             limit=1,
+            recall_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             recency_bias=0,
             rerank=True,
         )
@@ -94,6 +95,7 @@ class TestAsyncSearch:
             graph=True,
             include_source=True,
             limit=1,
+            recall_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             recency_bias=0,
             rerank=True,
         )

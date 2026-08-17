@@ -43,8 +43,9 @@ class TestConversations:
             ],
             space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             meta={"foo": "bar"},
-            session_date="session_date",
-            session_id="session_id",
+            session_date="x",
+            session_id="x",
+            visibility="private",
         )
         assert_matches_type(IngestConversation, conversation, path=["response"])
 
@@ -118,8 +119,9 @@ class TestAsyncConversations:
             ],
             space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             meta={"foo": "bar"},
-            session_date="session_date",
-            session_id="session_id",
+            session_date="x",
+            session_id="x",
+            visibility="private",
         )
         assert_matches_type(IngestConversation, conversation, path=["response"])
 

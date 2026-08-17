@@ -14,7 +14,6 @@ class Entity(BaseModel):
     created_at: datetime
 
     edge_count: int
-    """Total incoming + outgoing edges"""
 
     entity_type: Optional[str] = None
 

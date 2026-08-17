@@ -13,6 +13,7 @@ from .space_list import SpaceList as SpaceList
 from .entity_list import EntityList as EntityList
 from .memory_list import MemoryList as MemoryList
 from .source_list import SourceList as SourceList
+from .usage_metric import UsageMetric as UsageMetric
 from .entity_detail import EntityDetail as EntityDetail
 from .ingest_accepted import IngestAccepted as IngestAccepted
 from .usage_get_params import UsageGetParams as UsageGetParams
@@ -29,5 +30,4 @@ from .memory_delete_params import MemoryDeleteParams as MemoryDeleteParams
 from .search_hybrid_params import SearchHybridParams as SearchHybridParams
 from .source_delete_params import SourceDeleteParams as SourceDeleteParams
 from .source_ingest_params import SourceIngestParams as SourceIngestParams
-from .health_check_response import HealthCheckResponse as HealthCheckResponse
 from .conversation_ingest_params import ConversationIngestParams as ConversationIngestParams

@@ -52,7 +52,7 @@ class JobsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Job:
         """
-        Poll for ingestion job status.
+        Get Job
 
         Args:
           extra_headers: Send extra headers
@@ -106,7 +106,7 @@ class AsyncJobsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Job:
         """
-        Poll for ingestion job status.
+        Get Job
 
         Args:
           extra_headers: Send extra headers

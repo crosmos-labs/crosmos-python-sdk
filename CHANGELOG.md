@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.2.0 (2026-08-17)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/crosmos-labs/crosmos-python-sdk/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** api update ([871eb76](https://github.com/crosmos-labs/crosmos-python-sdk/commit/871eb76a97efec975477aa4fa11d10f608b04159))
+* **api:** api update ([13131b5](https://github.com/crosmos-labs/crosmos-python-sdk/commit/13131b58f80356f9716d7eaaef696a19d59ddc23))
+* **api:** api update ([789b53c](https://github.com/crosmos-labs/crosmos-python-sdk/commit/789b53cc750c0040c864e3383308f8a7afd59811))
+* **api:** manual updates ([e0780fa](https://github.com/crosmos-labs/crosmos-python-sdk/commit/e0780fa7ecfb2fd0f52f2f4ed9fd641369b79ad4))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([1139b66](https://github.com/crosmos-labs/crosmos-python-sdk/commit/1139b66d74f9ddadcdc169368a6a6c420e35bed0))
+
+
+### Bug Fixes
+
+* **auth:** prioritize first auth header ([a0548e7](https://github.com/crosmos-labs/crosmos-python-sdk/commit/a0548e785cc46e428bbd19abe56c0694ade9c62f))
+* **internal:** resolve build failures ([4afc7c0](https://github.com/crosmos-labs/crosmos-python-sdk/commit/4afc7c0929aca17b9a7d63b71245a6b2b9467f0f))
+
 ## 0.1.0 (2026-05-30)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/crosmos-labs/crosmos-python-sdk/compare/v0.0.1...v0.1.0)
