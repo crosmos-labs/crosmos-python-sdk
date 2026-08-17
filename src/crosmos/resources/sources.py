@@ -18,9 +18,10 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from .._base_client import make_request_options
-from ..types.source import Source
-from ..types.source_list import SourceList
+from ..pagination import SyncSourcesOffsetPage, AsyncSourcesOffsetPage
+from .._base_client import AsyncPaginator, make_request_options
+from ..types.source import Source as TypesSource
+from ..types.source_list import Source as SourceListSource
 from ..types.ingest_accepted import IngestAccepted
 
 __all__ = ["SourcesResource", "AsyncSourcesResource"]
@@ -61,7 +62,7 @@ class SourcesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SourceList:
+    ) -> SyncSourcesOffsetPage[SourceListSource]:
         """
         List Sources
 
@@ -74,8 +75,9 @@ class SourcesResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return self._get(
+        return self._get_api_list(
             "/api/v1/sources",
+            page=SyncSourcesOffsetPage[SourceListSource],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -93,7 +95,7 @@ class SourcesResource(SyncAPIResource):
                     source_list_params.SourceListParams,
                 ),
             ),
-            cast_to=SourceList,
+            model=SourceListSource,
         )
 
     def delete(
@@ -154,7 +156,7 @@ class SourcesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Source:
+    ) -> TypesSource:
         """
         Get Source
 
@@ -184,7 +186,7 @@ class SourcesResource(SyncAPIResource):
                     source_get_params.SourceGetParams,
                 ),
             ),
-            cast_to=Source,
+            cast_to=TypesSource,
         )
 
     def ingest(
@@ -249,7 +251,7 @@ class AsyncSourcesResource(AsyncAPIResource):
         """
         return AsyncSourcesResourceWithStreamingResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
         content_type: str | Omit = omit,
@@ -264,7 +266,7 @@ class AsyncSourcesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SourceList:
+    ) -> AsyncPaginator[SourceListSource, AsyncSourcesOffsetPage[SourceListSource]]:
         """
         List Sources
 
@@ -277,14 +279,15 @@ class AsyncSourcesResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return await self._get(
+        return self._get_api_list(
             "/api/v1/sources",
+            page=AsyncSourcesOffsetPage[SourceListSource],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform(
+                query=maybe_transform(
                     {
                         "content_type": content_type,
                         "extraction_status": extraction_status,
@@ -296,7 +299,7 @@ class AsyncSourcesResource(AsyncAPIResource):
                     source_list_params.SourceListParams,
                 ),
             ),
-            cast_to=SourceList,
+            model=SourceListSource,
         )
 
     async def delete(
@@ -357,7 +360,7 @@ class AsyncSourcesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> Source:
+    ) -> TypesSource:
         """
         Get Source
 
@@ -387,7 +390,7 @@ class AsyncSourcesResource(AsyncAPIResource):
                     source_get_params.SourceGetParams,
                 ),
             ),
-            cast_to=Source,
+            cast_to=TypesSource,
         )
 
     async def ingest(

@@ -17,10 +17,9 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from .._base_client import make_request_options
-from ..types.space_list import SpaceList
-from ..types.space_get_response import SpaceGetResponse
-from ..types.space_create_response import SpaceCreateResponse
+from ..pagination import SyncSpacesOffsetPage, AsyncSpacesOffsetPage
+from ..types.space import Space
+from .._base_client import AsyncPaginator, make_request_options
 
 __all__ = ["SpacesResource", "AsyncSpacesResource"]
 
@@ -57,7 +56,7 @@ class SpacesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpaceCreateResponse:
+    ) -> Space:
         """
         Create memory space
 
@@ -83,7 +82,7 @@ class SpacesResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SpaceCreateResponse,
+            cast_to=Space,
         )
 
     def list(
@@ -98,7 +97,7 @@ class SpacesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpaceList:
+    ) -> SyncSpacesOffsetPage[Space]:
         """
         Pass ?name= to resolve a space by its name (returns 0 or 1 since names are
         unique per org).
@@ -112,8 +111,9 @@ class SpacesResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return self._get(
+        return self._get_api_list(
             "/api/v1/spaces",
+            page=SyncSpacesOffsetPage[Space],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -128,7 +128,7 @@ class SpacesResource(SyncAPIResource):
                     space_list_params.SpaceListParams,
                 ),
             ),
-            cast_to=SpaceList,
+            model=Space,
         )
 
     def delete(
@@ -175,7 +175,7 @@ class SpacesResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpaceGetResponse:
+    ) -> Space:
         """
         Get memory space
 
@@ -195,7 +195,7 @@ class SpacesResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SpaceGetResponse,
+            cast_to=Space,
         )
 
 
@@ -231,7 +231,7 @@ class AsyncSpacesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpaceCreateResponse:
+    ) -> Space:
         """
         Create memory space
 
@@ -257,10 +257,10 @@ class AsyncSpacesResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SpaceCreateResponse,
+            cast_to=Space,
         )
 
-    async def list(
+    def list(
         self,
         *,
         limit: int | Omit = omit,
@@ -272,7 +272,7 @@ class AsyncSpacesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpaceList:
+    ) -> AsyncPaginator[Space, AsyncSpacesOffsetPage[Space]]:
         """
         Pass ?name= to resolve a space by its name (returns 0 or 1 since names are
         unique per org).
@@ -286,14 +286,15 @@ class AsyncSpacesResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return await self._get(
+        return self._get_api_list(
             "/api/v1/spaces",
+            page=AsyncSpacesOffsetPage[Space],
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform(
+                query=maybe_transform(
                     {
                         "limit": limit,
                         "name": name,
@@ -302,7 +303,7 @@ class AsyncSpacesResource(AsyncAPIResource):
                     space_list_params.SpaceListParams,
                 ),
             ),
-            cast_to=SpaceList,
+            model=Space,
         )
 
     async def delete(
@@ -349,7 +350,7 @@ class AsyncSpacesResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpaceGetResponse:
+    ) -> Space:
         """
         Get memory space
 
@@ -369,7 +370,7 @@ class AsyncSpacesResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SpaceGetResponse,
+            cast_to=Space,
         )
 
 

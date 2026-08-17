@@ -1,27 +1,11 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import Dict, List, Optional
-from datetime import datetime
+from typing import List
 
+from .space import Space
 from .._models import BaseModel
 
-__all__ = ["SpaceList", "Space"]
-
-
-class Space(BaseModel):
-    id: str
-
-    created_at: datetime
-
-    description: Optional[str] = None
-
-    meta: Optional[Dict[str, Optional[object]]] = None
-
-    name: str
-
-    org_id: str
-
-    updated_at: datetime
+__all__ = ["SpaceList"]
 
 
 class SpaceList(BaseModel):

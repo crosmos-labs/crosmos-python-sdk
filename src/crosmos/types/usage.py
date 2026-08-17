@@ -4,32 +4,9 @@ from datetime import date
 from typing_extensions import Literal
 
 from .._models import BaseModel
+from .usage_metric import UsageMetric
 
-__all__ = ["Usage", "Queries", "Spaces", "Tokens"]
-
-
-class Queries(BaseModel):
-    limit: int
-
-    remaining: int
-
-    used: int
-
-
-class Spaces(BaseModel):
-    limit: int
-
-    remaining: int
-
-    used: int
-
-
-class Tokens(BaseModel):
-    limit: int
-
-    remaining: int
-
-    used: int
+__all__ = ["Usage"]
 
 
 class Usage(BaseModel):
@@ -39,12 +16,12 @@ class Usage(BaseModel):
 
     plan: Literal["free", "developer", "pro", "enterprise"]
 
-    queries: Queries
+    queries: UsageMetric
 
     rate_limit_per_day: int
 
     rate_limit_rpm: int
 
-    spaces: Spaces
+    spaces: UsageMetric
 
-    tokens: Tokens
+    tokens: UsageMetric

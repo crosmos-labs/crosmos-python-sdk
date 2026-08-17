@@ -6,7 +6,7 @@ from typing_extensions import Literal
 
 from .._models import BaseModel
 
-__all__ = ["JobGetStatusResponse", "Result"]
+__all__ = ["Job", "Result"]
 
 
 class Result(BaseModel):
@@ -27,7 +27,7 @@ class Result(BaseModel):
     source_errors: Optional[Dict[str, str]] = None
 
 
-class JobGetStatusResponse(BaseModel):
+class Job(BaseModel):
     completed_at: Optional[datetime] = None
 
     created_at: datetime

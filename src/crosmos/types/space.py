@@ -5,10 +5,10 @@ from datetime import datetime
 
 from .._models import BaseModel
 
-__all__ = ["SpaceCreateResponse"]
+__all__ = ["Space"]
 
 
-class SpaceCreateResponse(BaseModel):
+class Space(BaseModel):
     id: str
 
     created_at: datetime

@@ -9,7 +9,8 @@ import pytest
 
 from crosmos import Crosmos, AsyncCrosmos
 from tests.utils import assert_matches_type
-from crosmos.types import EntityList, EntityDetail
+from crosmos.types import Entity, EntityDetail
+from crosmos.pagination import SyncEntitiesOffsetPage, AsyncEntitiesOffsetPage
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -21,7 +22,7 @@ class TestEntities:
     @parametrize
     def test_method_list(self, client: Crosmos) -> None:
         entity = client.entities.list()
-        assert_matches_type(EntityList, entity, path=["response"])
+        assert_matches_type(SyncEntitiesOffsetPage[Entity], entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -36,7 +37,7 @@ class TestEntities:
             space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
-        assert_matches_type(EntityList, entity, path=["response"])
+        assert_matches_type(SyncEntitiesOffsetPage[Entity], entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -46,7 +47,7 @@ class TestEntities:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         entity = response.parse()
-        assert_matches_type(EntityList, entity, path=["response"])
+        assert_matches_type(SyncEntitiesOffsetPage[Entity], entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -56,7 +57,7 @@ class TestEntities:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             entity = response.parse()
-            assert_matches_type(EntityList, entity, path=["response"])
+            assert_matches_type(SyncEntitiesOffsetPage[Entity], entity, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -122,7 +123,7 @@ class TestAsyncEntities:
     @parametrize
     async def test_method_list(self, async_client: AsyncCrosmos) -> None:
         entity = await async_client.entities.list()
-        assert_matches_type(EntityList, entity, path=["response"])
+        assert_matches_type(AsyncEntitiesOffsetPage[Entity], entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -137,7 +138,7 @@ class TestAsyncEntities:
             space_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             space_uuid="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
-        assert_matches_type(EntityList, entity, path=["response"])
+        assert_matches_type(AsyncEntitiesOffsetPage[Entity], entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -147,7 +148,7 @@ class TestAsyncEntities:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         entity = await response.parse()
-        assert_matches_type(EntityList, entity, path=["response"])
+        assert_matches_type(AsyncEntitiesOffsetPage[Entity], entity, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -157,7 +158,7 @@ class TestAsyncEntities:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             entity = await response.parse()
-            assert_matches_type(EntityList, entity, path=["response"])
+            assert_matches_type(AsyncEntitiesOffsetPage[Entity], entity, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
