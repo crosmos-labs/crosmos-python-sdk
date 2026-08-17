@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.1 (2026-08-17)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/crosmos-labs/crosmos-python-sdk/compare/v0.2.0...v0.2.1)
+
+### Chores
+
+* update SDK settings ([40f07b9](https://github.com/crosmos-labs/crosmos-python-sdk/commit/40f07b9a1d0e1508e7ac4f9362eaacfddbf71e07))
+* update SDK settings ([e67c3ef](https://github.com/crosmos-labs/crosmos-python-sdk/commit/e67c3ef8396e642a39884a8565571ecd3b29f744))
+* update SDK settings ([3fb4bc8](https://github.com/crosmos-labs/crosmos-python-sdk/commit/3fb4bc868abaf86688bed01c6f5fa9b369e6eedf))
+
 ## 0.2.0 (2026-08-17)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/crosmos-labs/crosmos-python-sdk/compare/v0.1.0...v0.2.0)
