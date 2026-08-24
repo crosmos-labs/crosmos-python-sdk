@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2026-08-24)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/crosmos-labs/crosmos-python-sdk/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* **api:** api update ([39c9681](https://github.com/crosmos-labs/crosmos-python-sdk/commit/39c9681ce12b916a18894012414189be9c05ab7c))
+
 ## 0.2.1 (2026-08-17)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/crosmos-labs/crosmos-python-sdk/compare/v0.2.0...v0.2.1)
