@@ -22,6 +22,8 @@ class Candidate(BaseModel):
 
     score: float
 
+    source_id: Optional[str] = None
+
     source: Optional[str] = None
 
 
